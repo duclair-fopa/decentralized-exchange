@@ -1,0 +1,73 @@
+.steps-carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.steps-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.step {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  transition: transform 0.5s ease;
+}
+
+.step:hover {
+  transform: scale(1.05);
+}
+
+.step-content {
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.step:hover .step-content {
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.step h2 {
+  margin-top: 0;
+  color: #333;
+}
+
+.step p {
+  margin-bottom: 0;
+  color: #666;
+}
+
+.steps-carousel {
+  width: 100%;
+  margin-bottom: 30px;
+  padding: 20px 0;
+  overflow-y: hidden;
+}
+
+.step {
+  min-width: 300px;
+}
+
+.step-content {
+  text-align: center;
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  fill: #333;
+  margin-bottom: 10px;
+}
+
+.step h2 {
+  margin-top: 0;
+  color: #333;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 10px;
+}
