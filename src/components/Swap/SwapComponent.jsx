@@ -5,7 +5,6 @@ import {
   DownOutlined,
   SettingOutlined,
 } from '@ant-design/icons'
-import './SwapComponent.css'
 
 import tokenList from '../../utils/tokenList.json'
 import uniRouter from '../../utils/UniRouter.json'
@@ -16,7 +15,7 @@ import { useWeb3jsSigner } from '../../utils/useWe3js'
 import { sepolia } from 'viem/chains'
 
 import TransactionModal from 'react-modal'
-import TransactionLoader from '../TransactionLoader'
+import TransactionLoader from '../TransactionLoader/TransactionLoader'
 
 TransactionModal.setAppElement('#root')
 

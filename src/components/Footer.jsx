@@ -1,127 +1,54 @@
+import React from 'react'
+
 const Footer = () => {
   return (
-    <>
-      <div
-        className='container-fluid bg-light footer mt-5 pt-5 wow fadeIn'
-        data-wow-delay='0.1s'
-      >
-        <div className='container py-5'>
-          <div className='row g-5'>
-            <div className='col-md-6'>
-              <h1 className='text-primary mb-4'>
-                <img
-                  className='img-fluid me-2'
-                  src='/img/icon-1.png'
-                  alt=''
-                  style={{ width: '45px' }}
-                />
-                DexSwap
-              </h1>
-              <span>
-                DexSwap finds the lowest price for your trade across all
-                exchanges and aggregators, such as Uniswap and 1inch - and
-                protects you from MEV, unlike the others.
-              </span>
-            </div>
-            <div className='col-md-6'>
-              <h5 className='mb-4'>Newsletter</h5>
-              <p>Clita erat ipsum et lorem et sit, sed stet lorem sit clita.</p>
-              <div className='position-relative'>
-                <input
-                  className='form-control bg-transparent w-100 py-3 ps-4 pe-5'
-                  type='text'
-                  placeholder='Your email'
-                />
-                <button
-                  type='button'
-                  className='btn btn-primary py-2 px-3 position-absolute top-0 end-0 mt-2 me-2'
-                >
-                  SignUp
-                </button>
+    <div className='w-full dark:bg-gray-800'>
+      <div className='max-w-2xl mx-auto text-white py-10'>
+        <div className='text-center'>
+          <h3 className='text-4xl lg:text-5xl font-extrabold text-white mb-6 md:!leading-[55px] text-center'>
+            {' '}
+            Download our app{' '}
+          </h3>
+          <p> Trade Strong. All Markets, Every Moment. </p>
+          <div className='flex justify-center my-10'>
+            <div className='flex items-center border w-auto rounded-lg px-4 py-2 w-52 mx-2'>
+              <img
+                src='https://cdn-icons-png.flaticon.com/512/888/888857.png'
+                className='w-7 md:w-8'
+                alt='footer icon'
+              />
+              <div className='text-left ml-3'>
+                <p className='text-xs text-gray-200'>Download on </p>
+                <p className='text-sm md:text-base'> Google Play Store </p>
               </div>
             </div>
-            <div className='col-lg-3 col-md-6'>
-              <h5 className='mb-4'>Get In Touch</h5>
-              <p>
-                <i className='fa fa-map-marker-alt me-3'></i>123 Street, New
-                York, USA
-              </p>
-              <p>
-                <i className='fa fa-phone-alt me-3'></i>+012 345 67890
-              </p>
-              <p>
-                <i className='fa fa-envelope me-3'></i>info@example.com
-              </p>
-            </div>
-            <div className='col-lg-3 col-md-6'>
-              <h5 className='mb-4'>Our Services</h5>
-              <a className='btn btn-link' href=''>
-                Currency Wallet
-              </a>
-              <a className='btn btn-link' href=''>
-                Currency Transaction
-              </a>
-              <a className='btn btn-link' href=''>
-                Bitcoin Investment
-              </a>
-              <a className='btn btn-link' href=''>
-                Token Sale
-              </a>
-            </div>
-            <div className='col-lg-3 col-md-6'>
-              <h5 className='mb-4'>Quick Links</h5>
-              <a className='btn btn-link' href=''>
-                About Us
-              </a>
-              <a className='btn btn-link' href=''>
-                Contact Us
-              </a>
-              <a className='btn btn-link' href=''>
-                Our Services
-              </a>
-              <a className='btn btn-link' href=''>
-                Terms & Condition
-              </a>
-            </div>
-            <div className='col-lg-3 col-md-6'>
-              <h5 className='mb-4'>Follow Us</h5>
-              <div className='d-flex'>
-                <a className='btn btn-square rounded-circle me-1' href=''>
-                  <i className='fab fa-twitter'></i>
-                </a>
-                <a className='btn btn-square rounded-circle me-1' href=''>
-                  <i className='fab fa-facebook-f'></i>
-                </a>
-                <a className='btn btn-square rounded-circle me-1' href=''>
-                  <i className='fab fa-youtube'></i>
-                </a>
-                <a className='btn btn-square rounded-circle me-1' href=''>
-                  <i className='fab fa-linkedin-in'></i>
-                </a>
+            <div className='flex items-center border w-auto rounded-lg px-4 py-2 w-44 mx-2'>
+              <img
+                src='https://cdn-icons-png.flaticon.com/512/888/888841.png'
+                className='w-7 md:w-8'
+                alt=''
+              />
+              <div className='text-left ml-3'>
+                <p className='text-xs text-gray-200'>Download on </p>
+                <p className='text-sm md:text-base'> Apple Store </p>
               </div>
             </div>
           </div>
         </div>
-        <div className='container-fluid copyright'>
-          <div className='container'>
-            <div className='row'>
-              <div className='col-md-6 text-center text-md-start mb-3 mb-md-0'>
-                &copy; <a href='#'>DexSwap</a>, All Right Reserved.
-              </div>
-              <div className='col-md-6 text-center text-md-end'>
-                Thank you for your support. Designed By <a href='#'>DexSwap</a>
-              </div>
-            </div>
+        <div className='mt-28 flex flex-col md:flex-row md:justify-between items-center text-sm text-white'>
+          <p className='order-2 md:order-1 mt-8 md:mt-0'>
+            {' '}
+            &copy; Beautiful Footer, 2021.{' '}
+          </p>
+          <div className='order-1 md:order-2'>
+            <span className='px-2'>About us</span>
+            <span className='px-2 border-l'>Contact us</span>
+            <span className='px-2 border-l'>Privacy Policy</span>
           </div>
         </div>
       </div>
-      <a
-        href='#'
-        className='btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top'
-      >
-        <i className='bi bi-arrow-up'></i>
-      </a>
-    </>
+    </div>
   )
 }
+
 export default Footer

@@ -10,7 +10,14 @@ const App = () => {
       <Routes>
         <Route path='/' element={<SharedLayout />}>
           <Route index element={<Home />} />
-          <Route path='swap' element={<SwapComponent />} />
+          <Route
+            path='swap'
+            element={
+              <div className='w-full h-screen flex flex-col items-center justify-center bg-[#2D242F]'>
+                <SwapComponent />
+              </div>
+            }
+          />
           <Route path='*' element={<ErrorPage />} />
         </Route>
       </Routes>
