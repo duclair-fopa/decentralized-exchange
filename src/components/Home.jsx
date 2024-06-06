@@ -12,7 +12,6 @@ import Review from './Review'
 function Home() {
   return (
     <div className='w-full flex flex-col items-center justify-center bg-[#2D242F]'>
-      {/* <Header /> */}
       <section className='py-8 z-10'>
         <div className='flex flex-col md:flex-row items-center max-w-6xl px-6 py-8 mx-auto'>
           <div className='flex flex-col gap-4 w-full md:w-1/2 py-8 text-center'>

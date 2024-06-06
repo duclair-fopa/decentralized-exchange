@@ -16,6 +16,8 @@ import { sepolia } from 'viem/chains'
 
 import TransactionModal from 'react-modal'
 import TransactionLoader from '../TransactionLoader/TransactionLoader'
+import { useEffect } from 'react'
+import Confetti from '../Confetti'
 
 TransactionModal.setAppElement('#root')
 
@@ -47,11 +49,22 @@ function SwapComponent() {
   const [prices, setPrices] = useState(null)
   const [oneN, setOneN] = useState()
   const [isLoading, setIsLoading] = useState(false)
+  const [showConfetti, setShowConfetti] = useState(false)
   const INFURA_ID = '35e86f89b81d45a8a62ed9bb6ab1f3e6'
 
   const web3js = useWeb3jsSigner({ chainId: sepolia.id })
 
   const account = useAccount()
+
+  useEffect(() => {
+    let timer
+    if (showConfetti) {
+      timer = setTimeout(() => {
+        setShowConfetti(false)
+      }, 5000)
+    }
+    return () => clearTimeout(timer)
+  }, [showConfetti])
 
   const sendTransaction = async () => {
     if (!web3js) return
@@ -112,6 +125,7 @@ function SwapComponent() {
           .catch((vannette) => console.log(vannette))
 
         setIsLoading(false)
+        setShowConfetti(true)
         setTokenOneAmount(null)
         setTokenTwoAmount(null)
       })
@@ -219,6 +233,7 @@ function SwapComponent() {
 
   return (
     <>
+      {showConfetti && <Confetti />}
       <Modal
         open={isOpen}
         footer={null}
