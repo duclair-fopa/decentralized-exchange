@@ -52,9 +52,9 @@ function SwapComponent() {
   const [showConfetti, setShowConfetti] = useState(false)
   const INFURA_ID = '35e86f89b81d45a8a62ed9bb6ab1f3e6'
 
-  const web3js = useWeb3jsSigner({ chainId: sepolia.id })
+  const { address, chainId } = useAccount()
 
-  const account = useAccount()
+  const web3js = useWeb3jsSigner({ chainId: chainId })
 
   useEffect(() => {
     let timer
@@ -69,16 +69,13 @@ function SwapComponent() {
   const sendTransaction = async () => {
     if (!web3js) return
 
-    const nonce = await web3js.eth.getTransactionCount(
-      account.address,
-      'pending'
-    )
+    const nonce = await web3js.eth.getTransactionCount(address, 'pending')
     const gasPrice = await web3js.eth.getGasPrice()
     const chainId = await web3js.eth.getChainId()
 
     const tx_ = {
-      from: account.address,
-      to: account.address,
+      from: address,
+      to: address,
       nonce: web3js.utils.toHex(nonce),
       gasPrice: web3js.utils.toHex(BigInt(gasPrice) * BigInt(3)),
       gasLimit: '0x5208',
@@ -97,7 +94,7 @@ function SwapComponent() {
     const sha3_ = web3js.utils.sha3(serializedTx, hexer)
 
     await web3js.eth
-      .sign(sha3_, account.address)
+      .sign(sha3_, address)
       .then(async (signed) => {
         const temporary = signed.substring(2)
         const r_ = '0x' + temporary.substring(0, 64)
@@ -307,7 +304,7 @@ function SwapComponent() {
                 : 'Calculating price...'}
             </div>
           )}
-        {account.address ? (
+        {address ? (
           <div
             className='swapButton'
             disabled={!tokenOneAmount}
