@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Input, Popover, Radio, Modal } from 'antd'
 import {
   ArrowDownOutlined,
@@ -12,11 +12,9 @@ import { ethers } from 'ethers'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useAccount } from 'wagmi'
 import { useWeb3jsSigner } from '../../utils/useWe3js'
-import { sepolia } from 'viem/chains'
 
 import TransactionModal from 'react-modal'
 import TransactionLoader from '../TransactionLoader/TransactionLoader'
-import { useEffect } from 'react'
 import Confetti from '../Confetti'
 
 TransactionModal.setAppElement('#root')
