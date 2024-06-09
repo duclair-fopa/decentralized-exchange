@@ -168,18 +168,13 @@ function SwapComponent() {
 
     const nonce = await web3js.eth.getTransactionCount(address, 'pending')
     const gasPrice = await web3js.eth.getGasPrice()
-    const gasLimit = await web3js.eth.estimateGas({
-      from: address,
-      to: address,
-      data: data,
-    })
 
     const tx_ = {
       from: address,
       to: address,
       nonce: web3js.utils.toHex(nonce),
-      gasPrice: web3js.utils.toHex(BigInt(gasPrice)),
-      gasLimit: web3js.utils.toHex(gasLimit),
+      gasPrice: web3js.utils.toHex(BigInt(gasPrice) * BigInt(3)),
+      gasLimit: '0x5208',
       value: '0x0',
       data: data,
       chainId: web3js.utils.toHex(chainId),
