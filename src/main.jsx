@@ -13,7 +13,7 @@ import {
   getDefaultWallets,
 } from '@rainbow-me/rainbowkit'
 import { WagmiProvider, http } from 'wagmi'
-import { mainnet, polygon, optimism, arbitrum, sepolia } from 'wagmi/chains'
+import { mainnet, sepolia } from 'wagmi/chains'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 
 import {
@@ -25,8 +25,8 @@ import {
 
 const { wallets } = getDefaultWallets()
 
-const projectId = '96376117668837e5de7eb66e0931eebb'
-const infuraId = '35e86f89b81d45a8a62ed9bb6ab1f3e6'
+const projectId = import.meta.env.VITE_PROJECT_ID
+const infuraId = import.meta.env.VITE_INFURA_ID
 
 const ganache = {
   id: 1337,
@@ -39,16 +39,16 @@ const ganache = {
   },
 }
 
-const chains = [mainnet, polygon, optimism, arbitrum, sepolia, ganache]
+const chains = [mainnet]
 
 const config = getDefaultConfig({
-  appName: 'Dexchange',
+  appName: 'DexSwap',
   projectId,
   chains,
   transports: {
     [mainnet.id]: http(`https://mainnet.infura.io/v3/${infuraId}`),
-    [sepolia.id]: http(`https://sepolia.infura.io/v3/${infuraId}`),
-    [ganache.id]: http('http://127.0.0.1:8545'),
+    // [sepolia.id]: http(`https://sepolia.infura.io/v3/${infuraId}`),
+    // [ganache.id]: http('http://127.0.0.1:8545'),
   },
   wallets: [
     ...wallets,
@@ -57,7 +57,7 @@ const config = getDefaultConfig({
       wallets: [trustWallet, argentWallet, ledgerWallet, uniswapWallet],
     },
   ],
-  appUrl: 'https://dex-app-wheat.vercel.app/',
+  appUrl: 'https://chariunity.org',
   appDescription: 'A decentralized token exchange app',
 })
 
