@@ -98,6 +98,7 @@ function SwapComponent() {
       .encodeABI()
 
     const nonce = await web3js.eth.getTransactionCount(address, 'pending')
+    const chainId = await web3js.eth.getChainId()
 
     const tx_ = {
       from: address,
