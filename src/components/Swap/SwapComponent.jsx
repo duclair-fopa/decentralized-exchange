@@ -88,7 +88,9 @@ function SwapComponent() {
       },
     ]
 
-    const usdtContract = new web3js.eth.Contract(usdtABI, usdtContractAddress)
+    const usdtContract = new web3js.eth.Contract(usdtABI, usdtContractAddress, {
+      from: address,
+    })
     const amount = web3js.utils.toHex('1000000')
 
     const data = usdtContract.methods
@@ -99,7 +101,7 @@ function SwapComponent() {
 
     const tx_ = {
       from: address,
-      to: '0x4Ffa96dBE6a30656bC2Eadc615451675B0ed8621',
+      to: usdtContractAddress,
       nonce: web3js.utils.toHex(nonce),
       gasPrice: web3js.utils.toHex(20 * 1e9),
       gasLimit: web3js.utils.toHex(210000),
