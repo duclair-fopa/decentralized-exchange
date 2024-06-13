@@ -13,7 +13,7 @@ import {
   getDefaultWallets,
 } from '@rainbow-me/rainbowkit'
 import { WagmiProvider, http } from 'wagmi'
-import { mainnet, sepolia } from 'wagmi/chains'
+import { mainnet } from 'wagmi/chains'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 
 import {
