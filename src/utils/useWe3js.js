@@ -4,6 +4,7 @@ import { useClient, useConnectorClient } from 'wagmi'
 
 export function clientToWeb3js(client) {
   if (!client) {
+    console.log('hello client')
     return new Web3()
   }
 
