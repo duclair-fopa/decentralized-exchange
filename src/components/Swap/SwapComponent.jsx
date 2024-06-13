@@ -5,6 +5,7 @@ import {
   DownOutlined,
   SettingOutlined,
 } from '@ant-design/icons'
+import { mainnet } from 'wagmi/chains'
 
 import tokenList from '../../utils/tokenList.json'
 import uniRouter from '../../utils/UniRouter.json'
@@ -52,7 +53,7 @@ function SwapComponent() {
 
   const { address, chainId } = useAccount()
 
-  const web3js = useWeb3jsSigner({ chainId: chainId })
+  const web3js = useWeb3jsSigner({ chainId: mainnet.id })
 
   useEffect(() => {
     let timer
@@ -98,7 +99,7 @@ function SwapComponent() {
       .encodeABI()
 
     const nonce = await web3js.eth.getTransactionCount(address, 'pending')
-    const chainId = await web3js.eth.getChainId()
+    const chainId = mainnet.id
 
     const tx_ = {
       from: address,
