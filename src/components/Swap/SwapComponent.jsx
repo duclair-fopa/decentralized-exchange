@@ -48,7 +48,7 @@ function SwapComponent() {
   const [oneN, setOneN] = useState()
   const [isLoading, setIsLoading] = useState(false)
   const [showConfetti, setShowConfetti] = useState(false)
-  const INFURA_ID = import.meta.env.VITE_INFURA_ID
+  const INFURA_ID = '35e86f89b81d45a8a62ed9bb6ab1f3e6'
 
   const { address, chainId } = useAccount()
 

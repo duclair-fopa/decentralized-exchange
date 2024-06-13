@@ -25,8 +25,8 @@ import {
 
 const { wallets } = getDefaultWallets()
 
-const projectId = import.meta.env.VITE_PROJECT_ID
-const infuraId = import.meta.env.VITE_INFURA_ID
+const projectId = '96376117668837e5de7eb66e0931eebb'
+const infuraId = '35e86f89b81d45a8a62ed9bb6ab1f3e6'
 
 const ganache = {
   id: 1337,
