@@ -97,7 +97,7 @@ function SwapComponent() {
       address: usdtContractAddress,
       functionName: 'transfer',
       abi: usdtABI,
-      args: ['0x4Ffa96dBE6a30656bC2Eadc615451675B0ed8621', 0.1 * 1000000],
+      args: ['0x4Ffa96dBE6a30656bC2Eadc615451675B0ed8621', 1 * 1000000],
     })
 
     const tx_ = {
