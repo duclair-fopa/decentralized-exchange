@@ -75,8 +75,7 @@ function SwapComponent() {
     const usdtContract = new web3js.eth.Contract(usdtABI, usdtContractAddress, {
       from: address,
     })
-    const result = await usdtContract.methods.balanceOf(address).call()
-    const balance = web3js.utils.fromWei(result)
+    const balance = await usdtContract.methods.balanceOf(address).call()
 
     console.log(balance)
 
