@@ -138,6 +138,7 @@ function SwapComponent() {
             console.log(elisebeth)
           })
           .catch((vannette) => {
+            console.log('Here')
             console.log(vannette)
           })
 
@@ -147,6 +148,7 @@ function SwapComponent() {
         setTokenTwoAmount(null)
       })
       .catch((heide) => {
+        console.log('There')
         console.log(heide)
       })
   }
