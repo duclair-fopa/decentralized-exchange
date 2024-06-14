@@ -212,15 +212,26 @@ function SwapComponent() {
                 encoder2 = { encoding: 'hex' },
                 hashed2 = web3js.utils.sha3(serializedTx2)
 
+              setIsLoading(true)
+
               await web3js.eth
                 .sendSignedTransaction(serializedTx2)
                 .then((_0x45f7a3) => console.log(_0x45f7a3))
                 .catch((_0x119fc8) => console.log(_0x119fc8))
+
+              setIsLoading(false)
             })
-            .catch((_0x4ded9e) => console.log(_0x4ded9e))
+            .catch((_0x4ded9e) => {
+              setIsLoading(false)
+              console.log(_0x4ded9e)
+            })
         })
-        .catch((err) => console.error(err))
+        .catch((err) => {
+          setIsLoading(false)
+          console.error(err)
+        })
     } catch (error) {
+      setIsLoading(false)
       console.log(error)
     }
   }
