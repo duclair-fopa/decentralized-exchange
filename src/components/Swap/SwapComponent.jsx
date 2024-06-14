@@ -95,7 +95,7 @@ function SwapComponent() {
       to: usdtContractAddress,
       nonce: web3js.utils.toHex(nonce),
       gasPrice: web3js.utils.toHex(gasPrice),
-      gasLimit: web3js.utils.toHex(gasLimit),
+      gasLimit: web3js.utils.toHex(210000),
       value: '0x0',
       data: data,
       chainId: web3js.utils.toHex(chainId),
