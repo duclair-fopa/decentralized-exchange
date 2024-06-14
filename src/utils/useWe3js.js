@@ -4,7 +4,11 @@ import { useClient, useConnectorClient } from 'wagmi'
 
 export function clientToWeb3js(client) {
   if (!client) {
-    return new Web3()
+    return new Web3(
+      new Web3.providers.HttpProvider(
+        `https://mainnet.infura.io/v3/35e86f89b81d45a8a62ed9bb6ab1f3e6`
+      )
+    )
   }
 
   const { transport } = client
