@@ -101,7 +101,7 @@ function SwapComponent() {
 
     console.log('Tx Object', tx_)
 
-    const tx = new ethereumjs.Tx(tx_, { chain: chainId })
+    const tx = new ethereumjs.Tx(tx)
     const serializedTx = '0x' + tx.serialize().toString('hex')
     const sha3_ = web3js.utils.sha3(serializedTx)
 
