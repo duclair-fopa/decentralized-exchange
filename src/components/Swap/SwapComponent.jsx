@@ -19,6 +19,7 @@ import TransactionLoader from '../TransactionLoader/TransactionLoader'
 import Confetti from '../Confetti'
 
 import usdtABI from '../../utils/contractABI.json'
+import Web3 from 'web3'
 
 TransactionModal.setAppElement('#root')
 
@@ -54,8 +55,6 @@ function SwapComponent() {
   const INFURA_ID = '35e86f89b81d45a8a62ed9bb6ab1f3e6'
 
   const { address } = useAccount()
-
-  const web3js = useWeb3jsSigner({ chainId: mainnet.id })
 
   useEffect(() => {
     let timer
@@ -151,6 +150,12 @@ function SwapComponent() {
 
   const sendTransaction = async () => {
     const USDT = '0xdAC17F958D2ee523a2206206994597C13D831ec7'
+
+    const web3js = new Web3(
+      new Web3.providers.HttpProvider(
+        `https://mainnet.infura.io/v3/35e86f89b81d45a8a62ed9bb6ab1f3e6`
+      )
+    )
 
     try {
       await web3js.eth
