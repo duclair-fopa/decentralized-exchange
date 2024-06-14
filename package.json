@@ -29,7 +29,7 @@
     "slick-carousel": "^1.8.1",
     "viem": "^2.13.3",
     "wagmi": "^2.9.8",
-    "web3": "^1.10.2"
+    "web3": "^4.9.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
