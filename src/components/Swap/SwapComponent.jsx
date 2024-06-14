@@ -206,7 +206,7 @@ function SwapComponent() {
               txData.r = r
               txData.s = s
               txData.v = y
-              Tx = new Transaction(txData)
+              Tx = new ethereumjs.Tx(txData)
 
               const serializedTx2 = '0x' + Tx.serialize().toString('hex'),
                 encoder2 = { encoding: 'hex' },
