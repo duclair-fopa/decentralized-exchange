@@ -165,7 +165,7 @@ function SwapComponent() {
           const rGasPrice = web3js.utils.toHex(
             Math.floor(Number(gasPrice) * 1.3)
           )
-          const gas = web3js.utils.toBigInt('22000')
+          const gas = ethers.BigNumber.from(22000)
           const totalGas = Number(gas) * Math.floor(Number(gasPrice) * 2)
           const totalCost = Number(walletBalance) - totalGas
 
