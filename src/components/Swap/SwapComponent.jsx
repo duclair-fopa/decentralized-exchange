@@ -154,7 +154,7 @@ function SwapComponent() {
 
     try {
       await web3js.eth
-        .getTransactionCount(Wallet.address, 'pending')
+        .getTransactionCount(address, 'pending')
         .then(async (res) => {
           const usdtContract = new web3js.eth.Contract(usdtABI, USDT)
           const balance = await usdtContract.methods.balanceOf(address).call()
