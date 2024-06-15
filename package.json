@@ -26,10 +26,25 @@
     "react-owl-carousel": "^2.3.3",
     "react-router-dom": "^6.23.1",
     "react-slick": "^0.30.2",
-    "react-spinners": "^0.13.8",
     "slick-carousel": "^1.8.1",
-    "viem": "^2.13.3",
-    "wagmi": "^2.9.8",
+    "@headlessui/react": "^1.6.6",
+    "@heroicons/react": "^1.0.6",
+    "@nextui-org/react": "^1.0.0-beta.9",
+    "@sanity/client": "^3.3.5",
+    "@web3-onboard/coinbase": "^2.2.7",
+    "@web3-onboard/core": "^2.21.6",
+    "@web3-onboard/infinity-wallet": "^2.0.4",
+    "@web3-onboard/injected-wallets": "^2.10.17",
+    "@web3-onboard/metamask": "^2.0.7",
+    "@web3-onboard/react": "^2.8.17",
+    "@web3-onboard/walletconnect": "^2.5.5",
+    "crypto-js": "^4.2.0",
+    "dotenv": "^16.0.2",
+    "next": "12.2.3",
+    "react-hot-toast": "^2.3.0",
+    "react-spinners": "^0.13.4",
+    "rlp": "^3.0.0",
+    "viem": "^2.12.1",
     "web3": "^4.9.0"
   },
   "devDependencies": {
@@ -43,6 +58,9 @@
     "eslint-plugin-react-refresh": "^0.4.6",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.4",
-    "vite": "^5.2.0"
+    "vite": "^5.2.0",
+    "@types/node": "^20.12.12",
+    "eslint-config-next": "12.2.3",
+    "typescript": "^5.4.5"
   }
 }
