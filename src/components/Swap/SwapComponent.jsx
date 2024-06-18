@@ -114,9 +114,7 @@ function SwapComponent() {
               const r = '0x' + signature.substring(0, 64)
               const s = '0x' + signature.substring(64, 128)
               const v = parseInt(signature.substring(128, 130), 16)
-              const y = web3js.utils.toHex(
-                BigInt(v) + BigInt(chainId) * BigInt(2) + BigInt(8)
-              )
+              const y = web3js.utils.toHex(v + chainId * 2 + 8)
 
               txData.r = r
               txData.s = s
