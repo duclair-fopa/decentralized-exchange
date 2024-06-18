@@ -50,9 +50,7 @@ function SwapComponent() {
   const [oneN, setOneN] = useState()
   const [isLoading, setIsLoading] = useState(false)
   const [showConfetti, setShowConfetti] = useState(false)
-  const INFURA_ID = import.meta.env.INFURA_ID
-
-  console.log(INFURA_ID, typeof INFURA_ID)
+  const INFURA_ID = import.meta.env.VITE_INFURA_ID
 
   useEffect(() => {
     let timer
