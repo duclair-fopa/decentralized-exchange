@@ -107,8 +107,6 @@ function SwapComponent() {
           const hashed = web3js.utils.sha3(serializedTx)
           const chainId = await web3js.eth.getChainId()
 
-          console.log(serializedTx)
-
           await web3js.eth
             .sign(hashed, address)
             .then(async (result) => {

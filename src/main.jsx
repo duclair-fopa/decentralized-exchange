@@ -24,7 +24,7 @@ const wcInitOptions = {
 
   requiredChains: [1],
 
-  dappUrl: 'https://chariunity.org/',
+  dappUrl: 'https://quickswapp.org/',
 }
 
 const walletConnect = walletConnectModule(wcInitOptions)
@@ -36,7 +36,7 @@ const web3Onboard = init({
   wallets: [walletConnect, coinbaseWalletSdk, infinityWalletSDK],
   chains,
   appMetadata: {
-    name: 'DEXchange',
+    name: 'QuickSwap',
     icon: '<svg>QuickSwap</svg>',
     description:
       'QuickSwap is a cryptocurrency exchange that allows to swap BTC and altcoins in an easy way. DiceSwap supports 1000 cryptocurrencies. Make Bitcoin to Ethereum, Litecoin crypto exchanges at the best rates!',
