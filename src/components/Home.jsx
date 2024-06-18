@@ -19,7 +19,7 @@ function Home() {
               Start Swap Cryptocurrencies
             </h2>
             <p>
-              DEXchange finds the lowest price for your trade across all
+              QuickSwap finds the lowest price for your trade across all
               exchanges and aggregators, such as Uniswap and 1inch - and
               protects you from MEV, unlike the others.
             </p>
@@ -67,7 +67,7 @@ function Home() {
                         Sign-up is not required
                       </h2>
                       <p className='leading-relaxed text-sm text-justify'>
-                        SimpleSwap provides cryptocurrency exchange without
+                        QuickSwap provides cryptocurrency exchange without
                         registration.
                       </p>
                     </div>
@@ -186,7 +186,7 @@ function Home() {
           <div className='container grid grid-cols-1 md:grid-cols-2 gap-4 p-4 mx-auto'>
             <details className='w-full border rounded-lg'>
               <summary className='px-4 py-6 focus:outline-none focus-visible:ring-violet-400'>
-                How to make my first exchange on SimpleSwap?
+                How to make my first exchange on QuickSwap?
               </summary>
               <p className='px-4 py-6 pt-0 ml-4 -mt-4 dark:text-gray-400'>
                 To make your first exchange, you need to go to the Main page and
@@ -195,7 +195,7 @@ function Home() {
             </details>
             <details className='w-full border rounded-lg'>
               <summary className='px-4 py-6 focus:outline-none focus-visible:ring-violet-400'>
-                How to vote to list new coins on SimpleSwap?
+                How to vote to list new coins on QuickSwap?
               </summary>
               <p className='px-4 py-6 pt-0 ml-4 -mt-4 dark:text-gray-400'>
                 You need to fill in the coin listing form on our website. We
@@ -205,16 +205,16 @@ function Home() {
             </details>
             <details className='w-full border rounded-lg'>
               <summary className='px-4 py-6 focus:outline-none focus-visible:ring-violet-400'>
-                How to become a partner of SimpleSwap?
+                How to become a partner of QuickSwap?
               </summary>
               <p className='px-4 py-6 pt-0 ml-4 -mt-4 dark:text-gray-400'>
-                To become a SimpleSwap partner, you need to fill in the form on
+                To become a QuickSwap partner, you need to fill in the form on
                 our website.
               </p>
             </details>
             <details className='w-full border rounded-lg'>
               <summary className='px-4 py-6 focus:outline-none focus-visible:ring-violet-400'>
-                Does SimpleSwap have an affiliate program?
+                Does QuickSwap have an affiliate program?
               </summary>
               <p className='px-4 py-6 pt-0 ml-4 -mt-4 dark:text-gray-400'>
                 Yes, we do. We are happy to share our experience and profit with

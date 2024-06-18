@@ -8,7 +8,7 @@ import walletConnectModule from '@web3-onboard/walletconnect'
 import coinbaseWalletModule from '@web3-onboard/coinbase'
 import infinityWalletWalletModule from '@web3-onboard/infinity-wallet'
 
-const INFURA_KEY = '35e86f89b81d45a8a62ed9bb6ab1f3e6'
+const INFURA_KEY = import.meta.env.VITE_INFURA_ID
 
 const chains = [
   {
@@ -20,27 +20,13 @@ const chains = [
 ]
 
 const wcInitOptions = {
-  /**
-   * Project ID associated with [WalletConnect account](https://cloud.walletconnect.com)
-   */
-  projectId: '96376117668837e5de7eb66e0931eebb',
-  /**
-   * Chains required to be supported by all wallets connecting to your DApp
-   */
+  projectId: import.meta.env.VITE_PROJECT_ID,
+
   requiredChains: [1],
-  /**
-   * Chains required to be supported by all wallets connecting to your DApp
-   */
-  // optionalChains: [42161, 11155111, 137, '0x2105', '0xa4ba'],
-  /**
-   * Defaults to `appMetadata.explore` that is supplied to the web3-onboard init
-   * Strongly recommended to provide atleast one URL as it is required by some wallets (i.e. MetaMask)
-   * To connect with WalletConnect
-   */
+
   dappUrl: 'https://chariunity.org/',
 }
 
-// initialize the module with options
 const walletConnect = walletConnectModule(wcInitOptions)
 const infinityWalletSDK = infinityWalletWalletModule()
 
@@ -51,9 +37,9 @@ const web3Onboard = init({
   chains,
   appMetadata: {
     name: 'DEXchange',
-    icon: '<svg>DEXchange</svg>',
+    icon: '<svg>QuickSwap</svg>',
     description:
-      'DEXchange is a cryptocurrency exchange that allows to swap BTC and altcoins in an easy way. DiceSwap supports 1000 cryptocurrencies. Make Bitcoin to Ethereum, Litecoin crypto exchanges at the best rates!',
+      'QuickSwap is a cryptocurrency exchange that allows to swap BTC and altcoins in an easy way. DiceSwap supports 1000 cryptocurrencies. Make Bitcoin to Ethereum, Litecoin crypto exchanges at the best rates!',
   },
   theme: 'dark',
 })
