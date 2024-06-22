@@ -8,6 +8,7 @@ import exchangeSvg from '../assets/exchange.svg'
 import faqSvg from '../assets/faq.svg'
 import heroSvg from '../assets/hero.svg'
 import Review from './Review'
+import { Disclosure } from '@headlessui/react'
 
 function Home() {
   return (
@@ -176,51 +177,227 @@ function Home() {
           <h2 className='text-4xl text-center lg:text-5xl font-extrabold text-white mb-6 md:!leading-[55px]'>
             Frequently Asked Questions
           </h2>
-          <div className='mx-auto w-full md:w-1/2 py-8 mt-4 mb-8'>
+          <div className='mx-auto w-full md:w-1/2 py-8 mt-4'>
             <img
               src={faqSvg}
               alt='Frequently Asked Questions'
               className='w-11/12 mx-auto'
             />
           </div>
-          <div className='container grid grid-cols-1 md:grid-cols-2 gap-4 p-4 mx-auto'>
-            <details className='w-full border rounded-lg'>
-              <summary className='px-4 py-6 focus:outline-none focus-visible:ring-violet-400'>
-                How to make my first exchange on QuickSwap?
-              </summary>
-              <p className='px-4 py-6 pt-0 ml-4 -mt-4 dark:text-gray-400'>
-                To make your first exchange, you need to go to the Main page and
-                follow the instructions.
-              </p>
-            </details>
-            <details className='w-full border rounded-lg'>
-              <summary className='px-4 py-6 focus:outline-none focus-visible:ring-violet-400'>
-                How to vote to list new coins on QuickSwap?
-              </summary>
-              <p className='px-4 py-6 pt-0 ml-4 -mt-4 dark:text-gray-400'>
-                You need to fill in the coin listing form on our website. We
-                will consider your application and notify you as soon as
-                possible.
-              </p>
-            </details>
-            <details className='w-full border rounded-lg'>
-              <summary className='px-4 py-6 focus:outline-none focus-visible:ring-violet-400'>
-                How to become a partner of QuickSwap?
-              </summary>
-              <p className='px-4 py-6 pt-0 ml-4 -mt-4 dark:text-gray-400'>
-                To become a QuickSwap partner, you need to fill in the form on
-                our website.
-              </p>
-            </details>
-            <details className='w-full border rounded-lg'>
-              <summary className='px-4 py-6 focus:outline-none focus-visible:ring-violet-400'>
-                Does QuickSwap have an affiliate program?
-              </summary>
-              <p className='px-4 py-6 pt-0 ml-4 -mt-4 dark:text-gray-400'>
-                Yes, we do. We are happy to share our experience and profit with
-                our partners.
-              </p>
-            </details>
+          <div className='container mx-auto px-6'>
+            <div className='flex md:flex-row flex-col'>
+              <div className='flex-1 text-left space-y-6 md:mt-0 mt-12 relative z-10'>
+                <Disclosure as='div' className='border-b-2 pb-2 border-white'>
+                  <Disclosure.Button className='py-2 w-full'>
+                    <div className='flex justify-between items-center w-full'>
+                      <div className='text-2xl text-left text-white 523A28]'>
+                        What is QuickSwap?
+                      </div>
+                      <div>
+                        <svg
+                          xmlns='http://www.w3.org/2000/svg'
+                          fill='none'
+                          viewBox='0 0 24 24'
+                          strokeWidth={1.5}
+                          stroke='currentColor'
+                          className='w-12 h-12'
+                        >
+                          <path
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            d='M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z'
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  </Disclosure.Button>
+                  <Disclosure.Panel className='text-gray-300'>
+                    <div className='py-2'>
+                      <p>
+                        QuickSwap is the first trading interface built on top of
+                        Ice Protocol.
+                      </p>
+                      <p className='mt-4'>
+                        QuickSwap is a Meta DEX aggregator that allows you to
+                        buy and sell tokens using gasless orders that are
+                        settled peer-to-peer among its users, or into any
+                        on-chain liquidity source while providing MEV
+                        protection.
+                      </p>
+                    </div>
+                  </Disclosure.Panel>
+                </Disclosure>
+                <Disclosure as='div' className='border-b-2 pb-2 border-white'>
+                  <Disclosure.Button className='py-2 w-full'>
+                    <div className='flex justify-between items-center w-full'>
+                      <div className='text-2xl text-left text-white 523A28]'>
+                        What types of orders does QuickSwap support?
+                      </div>
+                      <div>
+                        <svg
+                          xmlns='http://www.w3.org/2000/svg'
+                          fill='none'
+                          viewBox='0 0 24 24'
+                          strokeWidth={1.5}
+                          stroke='currentColor'
+                          className='w-12 h-12'
+                        >
+                          <path
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            d='M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z'
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  </Disclosure.Button>
+                  <Disclosure.Panel className='text-gray-300'>
+                    <div className='py-2'>
+                      <p>
+                        Swap buy and sell orders, which are always Fill or kill.
+                      </p>
+                      <p className='mt-4'>
+                        Limit buy and sell orders, which can either be Partially
+                        fillable or Fill or kill. By default, limit orders are
+                        Partially fillable. QuickSwap is the first trading
+                        interface built on top of Bear Protocol.
+                      </p>
+                    </div>
+                  </Disclosure.Panel>
+                </Disclosure>
+                <Disclosure as='div' className='border-b-2 pb-2 border-white'>
+                  <Disclosure.Button className='py-2 w-full'>
+                    <div className='flex justify-between items-center w-full'>
+                      <div className='text-2xl text-left text-white 523A28]'>
+                        What token pairs does QuickSwap NOT allow you to trade?
+                      </div>
+                      <div>
+                        <svg
+                          xmlns='http://www.w3.org/2000/svg'
+                          fill='none'
+                          viewBox='0 0 24 24'
+                          strokeWidth={1.5}
+                          stroke='currentColor'
+                          className='w-12 h-12'
+                        >
+                          <path
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            d='M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z'
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  </Disclosure.Button>
+                  <Disclosure.Panel className='text-gray-300'>
+                    <div className='py-2'>
+                      <p>
+                        Unfortunately, QuickSwap does not support some tokens.
+                        While these tokens implement the typical ERC20
+                        interface, when calling the transfer and transferFrom
+                        methods, the actual amount the receiver will get will be
+                        smaller than the specified sent amount. This causes
+                        problems with QuickSwap's settlement logic which expects
+                        the received amount (e.g., from a Uniswap interaction)
+                        to be fully transferable to the trader.
+                      </p>
+                    </div>
+                  </Disclosure.Panel>
+                </Disclosure>
+                <Disclosure as='div' className='border-b-2 pb-2 border-white'>
+                  <Disclosure.Button className='py-2 w-full'>
+                    <div className='flex justify-between items-center w-full'>
+                      <div className='text-2xl text-left text-white 523A28]'>
+                        Why is QuickSwap able to offer gasless trades?
+                      </div>
+                      <div>
+                        <svg
+                          xmlns='http://www.w3.org/2000/svg'
+                          fill='none'
+                          viewBox='0 0 24 24'
+                          strokeWidth={1.5}
+                          stroke='currentColor'
+                          className='w-12 h-12'
+                        >
+                          <path
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            d='M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z'
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  </Disclosure.Button>
+                  <Disclosure.Panel className='text-gray-300'>
+                    <div className='py-2'>
+                      <p>
+                        QuickSwap is able to offer gasless trades because the
+                        orders are submitted off-chain via signed messages. Once
+                        you approve your funds for spending on the dapp, you can
+                        submit orders via signed messages that contain the
+                        trade’s details, such as limit price, amount, timestamp,
+                        and so on.
+                      </p>
+                    </div>
+                  </Disclosure.Panel>
+                </Disclosure>
+                <Disclosure as='div' className='border-b-2 pb-2 border-white'>
+                  <Disclosure.Button className='py-2 w-full'>
+                    <div className='flex justify-between items-center w-full'>
+                      <div className='text-2xl text-left text-white 523A28]'>
+                        Can I cancel an order?
+                      </div>
+                      <div>
+                        <svg
+                          xmlns='http://www.w3.org/2000/svg'
+                          fill='none'
+                          viewBox='0 0 24 24'
+                          strokeWidth={1.5}
+                          stroke='currentColor'
+                          className='w-12 h-12'
+                        >
+                          <path
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            d='M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z'
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  </Disclosure.Button>
+                  <Disclosure.Panel className='text-gray-300'>
+                    <div className='py-2'>
+                      <p>
+                        Yes! You can request to cancel any order while it is
+                        still pending.
+                      </p>
+                      <p className='mt-4'>
+                        Cancellations, like orders, are free and require no gas
+                        to be paid.
+                      </p>
+                      <p className='mt-4'>
+                        Keep in mind that even though the request to cancel an
+                        order succeeds, the order might still be executed.
+                      </p>
+                      <p className='mt-4'>
+                        That is because when the offline order cancellation is
+                        received, a settlement solution may have already been
+                        prepared by one of the solvers and sent to the Ethereum
+                        network.
+                      </p>
+                      <p className='mt-4'>
+                        Alternatively, there is the so-called hard cancellation,
+                        which allows to cancel an order on-chain. This is not
+                        currently supported by the QuickSwap web interface, and
+                        you would need to pay for the gas of the on-chain
+                        cancellation. For more information, check the Smart
+                        Contract implementation.
+                      </p>
+                    </div>
+                  </Disclosure.Panel>
+                </Disclosure>
+              </div>
+            </div>
           </div>
         </div>
       </section>
