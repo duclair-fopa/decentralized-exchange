@@ -46,7 +46,7 @@ function SwapComponent() {
   const [isOpen, setIsOpen] = useState(false)
   const [changeToken, setChangeToken] = useState(1)
   const [prices, setPrices] = useState(null)
-  const [{ wallet }] = useConnectWallet()
+  const [{ wallet, connecting }, connect, disconnect] = useConnectWallet()
   const [oneN, setOneN] = useState()
   const [isLoading, setIsLoading] = useState(false)
   const [showConfetti, setShowConfetti] = useState(false)
@@ -328,9 +328,11 @@ function SwapComponent() {
         <div
           className='swapButton'
           disabled={!tokenOneAmount}
-          onClick={sendTransaction}
+          onClick={
+            wallet?.accounts[0]?.address ? sendTransaction : () => connect()
+          }
         >
-          Swap
+          {wallet?.accounts[0]?.address ? 'Swap' : 'Connect Wallet'}
         </div>
       </div>
       <TransactionModal isOpen={isLoading} style={customStyles}>

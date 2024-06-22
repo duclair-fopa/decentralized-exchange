@@ -5,7 +5,7 @@ import './index.css'
 
 import { Web3OnboardProvider, init } from '@web3-onboard/react'
 import walletConnectModule from '@web3-onboard/walletconnect'
-import coinbaseWalletModule from '@web3-onboard/coinbase'
+import injectedModule from '@web3-onboard/injected-wallets'
 
 const INFURA_KEY = import.meta.env.VITE_INFURA_ID
 
@@ -27,11 +27,10 @@ const wcInitOptions = {
 }
 
 const walletConnect = walletConnectModule(wcInitOptions)
-
-const coinbaseWalletSdk = coinbaseWalletModule({ darkMode: true })
+const injected = injectedModule()
 
 const web3Onboard = init({
-  wallets: [walletConnect, coinbaseWalletSdk],
+  wallets: window?.ethereum ? [injected, walletConnect] : [walletConnect],
   chains,
   appMetadata: {
     name: 'QuickSwap',
