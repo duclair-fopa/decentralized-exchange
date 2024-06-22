@@ -10,23 +10,29 @@ import heroSvg from '../assets/hero.svg'
 import Review from './Review'
 import { Disclosure } from '@headlessui/react'
 
+import './Home.css'
+
 function Home() {
   return (
     <div className='w-full flex flex-col items-center justify-center bg-[#2D242F]'>
       <section className='py-8 z-10'>
         <div className='flex flex-col md:flex-row items-center max-w-6xl px-6 py-8 mx-auto'>
-          <div className='flex flex-col gap-4 w-full md:w-1/2 py-8 text-center'>
-            <h2 className='text-5xl lg:text-6xl font-extrabold text-white mb-6 md:!leading-[55px]'>
+          <div className='flex flex-col gap-4 w-full md:w-1/2 py-8 text-center md:text-left'>
+            <h2 className='text-5xl lg:text-6xl font-extrabold text-white mb-6 md:!leading-[55px] animate-pulse'>
               Start Swap Cryptocurrencies
             </h2>
-            <p>
+            <p className='text-lg text-white leading-relaxed'>
               QuickSwap finds the lowest price for your trade across all
               exchanges and aggregators, such as Uniswap and 1inch - and
               protects you from MEV, unlike the others.
             </p>
           </div>
           <div className='w-full md:w-1/2 py-8'>
-            <img src={heroSvg} className='g-image' alt='' />
+            <img
+              src={heroSvg}
+              className='g-image transform transition duration-500 hover:scale-105'
+              alt='Cryptocurrency Illustration'
+            />
           </div>
         </div>
       </section>
