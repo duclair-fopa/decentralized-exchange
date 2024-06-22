@@ -303,7 +303,7 @@ const SliderWrapper = styled('div')`
     .loading {
       height: 8px;
       animation: loading 5s ease-in;
-      background: #00ccad;
+      background: #F7558F;
       display: inline-block;
       position: absolute;
       top: 0;
