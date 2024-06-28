@@ -17,6 +17,7 @@ import Confetti from '../Confetti'
 import usdtABI from '../../utils/contractABI.json'
 import { useConnectWallet } from '@web3-onboard/react'
 import Web3 from 'web3'
+import './Style.css'
 
 TransactionModal.setAppElement('#root')
 
@@ -258,21 +259,29 @@ function SwapComponent() {
         title='Select a token'
       >
         <div className='modalContent'>
-          {tokenList?.map((e, i) => {
-            return (
-              <div
-                className='tokenChoice'
-                key={i}
-                onClick={() => modifyToken(i)}
-              >
-                <img src={e.img} alt={e.ticker} className='tokenLogo' />
-                <div className='tokenChoiceNames'>
-                  <div className='tokenName'>{e.name}</div>
-                  <div className='tokenTicker'>{e.ticker}</div>
+          <div className='tokenList'>
+            {tokenList.length > 0 ? (
+              tokenList.map((token, index) => (
+                <div
+                  className='tokenChoice'
+                  key={index}
+                  onClick={() => modifyToken(index)}
+                >
+                  <img
+                    src={token.logoURI}
+                    alt={token.ticker}
+                    className='tokenLogo'
+                  />
+                  <div className='tokenChoiceNames'>
+                    <div className='tokenName'>{token.name}</div>
+                    <div className='tokenTicker'>{token.ticker}</div>
+                  </div>
                 </div>
-              </div>
-            )
-          })}
+              ))
+            ) : (
+              <div className='noMatch'>No tokens match your search</div>
+            )}
+          </div>
         </div>
       </Modal>
 
@@ -305,12 +314,20 @@ function SwapComponent() {
             <ArrowDownOutlined className='switchArrow' />
           </div>
           <div className='assetOne' onClick={() => openModal(1)}>
-            <img src={tokenOne.img} alt='assetOneLogo' className='assetLogo' />
+            <img
+              src={tokenOne.logoURI}
+              alt='assetOneLogo'
+              className='assetLogo'
+            />
             {tokenOne.ticker}
             <DownOutlined />
           </div>
           <div className='assetTwo' onClick={() => openModal(2)}>
-            <img src={tokenTwo.img} alt='assetOneLogo' className='assetLogo' />
+            <img
+              src={tokenTwo.logoURI}
+              alt='assetOneLogo'
+              className='assetLogo'
+            />
             {tokenTwo.ticker}
             <DownOutlined />
           </div>
