@@ -269,12 +269,12 @@ function SwapComponent() {
                 >
                   <img
                     src={token.logoURI}
-                    alt={token.ticker}
+                    alt={token.symbol}
                     className='tokenLogo'
                   />
                   <div className='tokenChoiceNames'>
                     <div className='tokenName'>{token.name}</div>
-                    <div className='tokenTicker'>{token.ticker}</div>
+                    <div className='tokenTicker'>{token.symbol}</div>
                   </div>
                 </div>
               ))
@@ -319,16 +319,16 @@ function SwapComponent() {
               alt='assetOneLogo'
               className='assetLogo'
             />
-            {tokenOne.ticker}
+            {tokenOne.symbol}
             <DownOutlined />
           </div>
           <div className='assetTwo' onClick={() => openModal(2)}>
             <img
               src={tokenTwo.logoURI}
-              alt='assetOneLogo'
+              alt='assetTwoLogo'
               className='assetLogo'
             />
-            {tokenTwo.ticker}
+            {tokenTwo.symbol}
             <DownOutlined />
           </div>
         </div>
@@ -337,7 +337,7 @@ function SwapComponent() {
           tokenOneAmount.trim() !== '' && (
             <div className='calculate'>
               {tokenTwoAmount !== null
-                ? `1 ${tokenOne.ticker} = ${oneN} ${tokenTwo.ticker}`
+                ? `1 ${tokenOne.symbol} = ${oneN} ${tokenTwo.symbol}`
                 : 'Calculating price...'}
             </div>
           )}
